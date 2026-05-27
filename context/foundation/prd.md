@@ -61,6 +61,8 @@ The insight: a cyclist's own past ride data (average speed, ride time, elevation
   > Socrates: See FR-001 note — same resolution applies.
 - FR-003: User can log out. Priority: must-have
   > Socrates: See FR-001 note — same resolution applies.
+- FR-012: User can delete their account and all associated training plans. Priority: must-have
+  > Socrates: Counter-argument considered: "account deletion is low-frequency; a support-driven deletion process is simpler to build." Resolution: kept as must-have — self-service deletion is a GDPR right-to-erasure requirement for EU users and a basic trust signal for any web product storing personal data.
 
 ### Plan generation
 - FR-004: User can paste last month's ride stats (average speed, ride time, elevation — plain text) as the input for plan generation. Priority: must-have
