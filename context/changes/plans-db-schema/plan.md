@@ -169,9 +169,9 @@ Add `src/types/database.ts` with types derived directly from the migration schem
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes with no TypeScript errors
-- [x] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes with no TypeScript errors — b5a1f2e
+- [x] 2.2 `npm run build` passes — b5a1f2e
 
 #### Manual
 
-- [x] 2.3 `Plan` and `NewPlan` imports from `@/types/database` resolve without errors
+- [x] 2.3 `Plan` and `NewPlan` imports from `@/types/database` resolve without errors — b5a1f2e
