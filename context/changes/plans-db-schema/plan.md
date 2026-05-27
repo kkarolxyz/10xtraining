@@ -156,22 +156,22 @@ Add `src/types/database.ts` with types derived directly from the migration schem
 
 #### Automated
 
-- [x] 1.1 Migration file exists at `supabase/migrations/20260528000000_create_plans_table.sql`
+- [x] 1.1 Migration file exists at `supabase/migrations/20260528000000_create_plans_table.sql` — 2297a10
 
 #### Manual
 
-- [x] 1.2 Migration applies without errors (remote: supabase db push; local: supabase start)
-- [x] 1.3 Authenticated user can INSERT/SELECT their own plans
-- [x] 1.4 Different authenticated user sees 0 rows (RLS verified)
-- [x] 1.5 DELETE by owner removes row; cross-user DELETE affects 0 rows
+- [x] 1.2 Migration applies without errors (remote: supabase db push; local: supabase start) — 2297a10
+- [x] 1.3 Authenticated user can INSERT/SELECT their own plans — 2297a10
+- [x] 1.4 Different authenticated user sees 0 rows (RLS verified) — 2297a10
+- [x] 1.5 DELETE by owner removes row; cross-user DELETE affects 0 rows — 2297a10
 
 ### Phase 2: TypeScript Types
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes with no TypeScript errors
-- [ ] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes with no TypeScript errors
+- [x] 2.2 `npm run build` passes
 
 #### Manual
 
-- [ ] 2.3 `Plan` and `NewPlan` imports from `@/types/database` resolve without errors
+- [x] 2.3 `Plan` and `NewPlan` imports from `@/types/database` resolve without errors
