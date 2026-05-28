@@ -238,13 +238,13 @@ Required JSON structure:
 
 #### Automated
 
-- [x] 1.1 `npm run lint` passes
-- [x] 1.2 `npm run build` passes
+- [x] 1.1 `npm run lint` passes — a921a21
+- [x] 1.2 `npm run build` passes — a921a21
 
 #### Manual
 
-- [x] 1.3 Missing OPENROUTER_API_KEY surfaces a startup warning in the UI
-- [x] 1.4 `.env.example` contains `OPENROUTER_API_KEY=###`
+- [x] 1.3 Missing OPENROUTER_API_KEY surfaces a startup warning in the UI — a921a21
+- [x] 1.4 `.env.example` contains `OPENROUTER_API_KEY=###` — a921a21
 
 ### Phase 2: TypeScript Types + AI Client Module
 
