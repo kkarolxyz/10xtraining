@@ -154,7 +154,7 @@ export interface TrainingPlan {
 
 **Intent**: Encapsulate the entire LLM interaction — input validation, API call, and response validation — in a single `generatePlan()` function that S-01 can call without knowing any OpenRouter details.
 
-**Contract**: Export one function `generatePlan(rideStats: string, goal: PlanGoal): Promise<TrainingPlan>`. Throws `Error` with a descriptive message on sparse input, API failure, JSON parse error, or missing `weeks` array. The model is hardcoded as the constant `MODEL = "google/gemini-2.5-flash-preview"`. The system prompt must include an explicit instruction to return only valid JSON (no markdown) and a one-shot JSON example showing the exact structure. Input sparseness is checked by counting non-empty lines in `rideStats`; fewer than 2 → throw before the API call.
+**Contract**: Export one function `generatePlan(rideStats: string, goal: PlanGoal): Promise<TrainingPlan>`. Throws `Error` with a descriptive message on sparse input, API failure, JSON parse error, or missing `weeks` array. The model is hardcoded as the constant `MODEL = "google/gemini-2.5-flash"`. The system prompt must include an explicit instruction to return only valid JSON (no markdown) and a one-shot JSON example showing the exact structure. Input sparseness is checked by counting non-empty lines in `rideStats`; fewer than 2 → throw before the API call.
 
 System prompt template (the non-obvious part — the exact wording is what the implementer needs):
 
@@ -250,13 +250,13 @@ Required JSON structure:
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes with no TypeScript errors
-- [ ] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes with no TypeScript errors
+- [x] 2.2 `npm run build` passes
 
 #### Manual
 
-- [ ] 2.3 `generatePlan()` with valid input returns TrainingPlan with 4 weeks × 7 days
-- [ ] 2.4 Speed and distance goals produce visibly different session profiles
-- [ ] 2.5 Empty string input throws before API call (input guard fires)
-- [ ] 2.6 Single-line input throws before API call
-- [ ] 2.7 Missing API key fails gracefully with descriptive error
+- [x] 2.3 `generatePlan()` with valid input returns TrainingPlan with 4 weeks × 7 days
+- [x] 2.4 Speed and distance goals produce visibly different session profiles
+- [x] 2.5 Empty string input throws before API call (input guard fires)
+- [x] 2.6 Single-line input throws before API call
+- [x] 2.7 Missing API key fails gracefully with descriptive error
