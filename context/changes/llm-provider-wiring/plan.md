@@ -250,13 +250,13 @@ Required JSON structure:
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes with no TypeScript errors
-- [x] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes with no TypeScript errors — 0d02cb6
+- [x] 2.2 `npm run build` passes — 0d02cb6
 
 #### Manual
 
-- [x] 2.3 `generatePlan()` with valid input returns TrainingPlan with 4 weeks × 7 days
-- [x] 2.4 Speed and distance goals produce visibly different session profiles
-- [x] 2.5 Empty string input throws before API call (input guard fires)
-- [x] 2.6 Single-line input throws before API call
-- [x] 2.7 Missing API key fails gracefully with descriptive error
+- [x] 2.3 `generatePlan()` with valid input returns TrainingPlan with 4 weeks × 7 days — 0d02cb6
+- [x] 2.4 Speed and distance goals produce visibly different session profiles — 0d02cb6
+- [x] 2.5 Empty string input throws before API call (input guard fires) — 0d02cb6
+- [x] 2.6 Single-line input throws before API call — 0d02cb6
+- [x] 2.7 Missing API key fails gracefully with descriptive error — 0d02cb6

@@ -1,7 +1,7 @@
 ---
 change_id: llm-provider-wiring
 title: Wire LLM provider and scaffold training plan generation prompt (F-02)
-status: implementing
+status: implemented
 created: 2026-05-28
 updated: 2026-05-29
 
