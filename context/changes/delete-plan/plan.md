@@ -213,28 +213,28 @@ Add `DeletePlanButton` to the plan detail page header so users can delete a plan
 
 #### Automated
 
-- [x] 1.1 `npm run lint` passes
-- [x] 1.2 `npm run build` passes
+- [x] 1.1 `npm run lint` passes — df6c9e8
+- [x] 1.2 `npm run build` passes — df6c9e8
 
 #### Manual
 
-- [x] 1.3 Endpoint exists and build includes the new route
+- [x] 1.3 Endpoint exists and build includes the new route — df6c9e8
 
 ### Phase 2: DeletePlanButton Component + Dashboard Integration
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes
-- [ ] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes
+- [x] 2.2 `npm run build` passes
 
 #### Manual
 
-- [ ] 2.3 Dashboard cards display correctly with "Delete" button row below each card
-- [ ] 2.4 Card title/content area navigates to `/plans/{id}` as before
-- [ ] 2.5 Clicking "Delete" removes the card from the page without a reload
-- [ ] 2.6 Second click while deleting is blocked (button disabled)
-- [ ] 2.7 API failure shows inline error; card remains; button re-enables
-- [ ] 2.8 Empty-state dashboard layout unchanged
+- [x] 2.3 Dashboard cards display correctly with "Delete" button row below each card
+- [x] 2.4 Card title/content area navigates to `/plans/{id}` as before
+- [x] 2.5 Clicking "Delete" removes the card from the page without a reload
+- [x] 2.6 Second click while deleting is blocked (button disabled)
+- [x] 2.7 API failure shows inline error; card remains; button re-enables
+- [x] 2.8 Empty-state dashboard layout unchanged
 
 ### Phase 3: Delete Button on Plan Detail Page
 
