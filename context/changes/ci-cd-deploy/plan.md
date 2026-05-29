@@ -297,7 +297,7 @@ Po fazie 3: `SUPABASE_URL` i `SUPABASE_KEY` są teraz skonfigurowane w **dwóch 
 
 #### Manual
 
-- [ ] 3.2 Diff ci.yml zawiera tylko oczekiwane zmiany, brak resztek --var
+- [x] 3.2 Diff ci.yml zawiera tylko oczekiwane zmiany, brak resztek --var
 
 ### Phase 4: End-to-End Verification
 
