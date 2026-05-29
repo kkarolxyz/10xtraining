@@ -294,28 +294,28 @@ Replace the `/plans/[id]` stub with a full plan-detail page that fetches the pla
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes
-- [x] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes — c168674
+- [x] 2.2 `npm run build` passes — c168674
 
 #### Manual
 
-- [x] 2.3 Dashboard shows empty state with "Generate plan" CTA
-- [x] 2.4 Empty stats input shows inline error without API call
-- [x] 2.5 Valid submit: loading state visible, redirects to `/plans/{id}`
-- [x] 2.6 Plan appears in dashboard list after generation
-- [x] 2.7 Missing `OPENROUTER_API_KEY` disables submit with banner
+- [x] 2.3 Dashboard shows empty state with "Generate plan" CTA — c168674
+- [x] 2.4 Empty stats input shows inline error without API call — c168674
+- [x] 2.5 Valid submit: loading state visible, redirects to `/plans/{id}` — c168674
+- [x] 2.6 Plan appears in dashboard list after generation — c168674
+- [x] 2.7 Missing `OPENROUTER_API_KEY` disables submit with banner — c168674
 
 ### Phase 3: Plan Detail Page
 
 #### Automated
 
-- [ ] 3.1 `npm run lint` passes
-- [ ] 3.2 `npm run build` passes
+- [x] 3.1 `npm run lint` passes
+- [x] 3.2 `npm run build` passes
 
 #### Manual
 
-- [ ] 3.3 Plan detail shows 4 week cards × 7 day rows each
-- [ ] 3.4 Session type badges are color-coded correctly
-- [ ] 3.5 `/plans/nonexistent-id` redirects to `/dashboard`
-- [ ] 3.6 Plan name, goal badge, and creation date display correctly
-- [ ] 3.7 "← Back to Dashboard" link navigates to `/dashboard`
+- [x] 3.3 Plan detail shows 4 week cards × 7 day rows each
+- [x] 3.4 Session type badges are color-coded correctly
+- [x] 3.5 `/plans/nonexistent-id` redirects to `/dashboard`
+- [x] 3.6 Plan name, goal badge, and creation date display correctly
+- [x] 3.7 "← Back to Dashboard" link navigates to `/dashboard`

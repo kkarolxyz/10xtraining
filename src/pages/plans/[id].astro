@@ -1,16 +1,81 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { createClient } from "@/lib/supabase";
+import type { Plan } from "@/types/database";
 
 const { id } = Astro.params;
+
+const supabase = createClient(Astro.request.headers, Astro.cookies);
+const queryResult = supabase ? await supabase.from("plans").select("*").eq("id", id).single() : null;
+const plan = queryResult && !queryResult.error && queryResult.data ? (queryResult.data as Plan) : null;
+
+if (!plan) return Astro.redirect("/dashboard");
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+}
+
+const sessionBadge: Record<string, string> = {
+  rest: "bg-gray-500/30 text-gray-300",
+  interval: "bg-red-500/30 text-red-300",
+  threshold: "bg-orange-500/30 text-orange-300",
+  endurance: "bg-green-500/30 text-green-300",
+  recovery: "bg-teal-500/30 text-teal-300",
+  strength: "bg-purple-500/30 text-purple-300",
+};
 ---
 
-<Layout title="Plan">
-  <div class="bg-cosmic flex min-h-screen items-center justify-center p-4">
-    <div class="rounded-2xl border border-white/10 bg-white/10 p-8 text-center text-white backdrop-blur-xl">
-      <h1 class="mb-4 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-3xl font-bold text-transparent">
-        Plan
-      </h1>
-      <p class="text-sm text-blue-100/50">Plan ID: {id}</p>
+<Layout title={plan.name}>
+  <div class="bg-cosmic min-h-screen p-6 text-white">
+    <div class="mx-auto max-w-3xl">
+      <div class="mb-8">
+        <a href="/dashboard" class="text-sm text-blue-100/60 hover:text-white">← Back to Dashboard</a>
+
+        <div class="mt-4 flex flex-wrap items-start gap-3">
+          <h1 class="text-3xl font-bold">{plan.name}</h1>
+          <span
+            class:list={[
+              "rounded-full px-3 py-1 text-sm font-medium",
+              plan.goal === "speed" ? "bg-blue-500/30 text-blue-200" : "bg-green-500/30 text-green-200",
+            ]}
+          >
+            {plan.goal === "speed" ? "Speed" : "Distance"}
+          </span>
+        </div>
+        <p class="mt-1 text-sm text-blue-100/50">{formatDate(plan.created_at)}</p>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        {
+          plan.plan.weeks.map((week) => (
+            <div class="rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur-xl">
+              <div class="mb-4 flex items-center gap-3">
+                <span class="text-xs font-medium text-blue-100/50">Week {week.week}</span>
+                <h2 class="text-lg font-semibold">{week.focus}</h2>
+              </div>
+              <div class="flex flex-col gap-2">
+                {week.days.map((day) => (
+                  <div class="flex items-start gap-3 rounded-lg bg-white/5 px-4 py-3">
+                    <span class="w-24 shrink-0 text-sm text-blue-100/60">{day.day}</span>
+                    <span
+                      class:list={[
+                        "shrink-0 rounded-full px-2 py-0.5 text-xs font-medium capitalize",
+                        sessionBadge[day.session.type] ?? "bg-gray-500/30 text-gray-300",
+                      ]}
+                    >
+                      {day.session.type}
+                    </span>
+                    <span class="w-16 shrink-0 text-right text-sm text-blue-100/50">
+                      {day.session.duration_min === 0 ? "Rest" : `${day.session.duration_min} min`}
+                    </span>
+                    <span class="text-sm text-blue-100/80">{day.session.description}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </div>
 </Layout>
