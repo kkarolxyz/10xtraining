@@ -293,22 +293,22 @@ Po fazie 3: `SUPABASE_URL` i `SUPABASE_KEY` są teraz skonfigurowane w **dwóch 
 
 #### Automated
 
-- [x] 3.1 npm run lint przechodzi po zmianie ci.yml
+- [x] 3.1 npm run lint przechodzi po zmianie ci.yml — ba12cde
 
 #### Manual
 
-- [x] 3.2 Diff ci.yml zawiera tylko oczekiwane zmiany, brak resztek --var
+- [x] 3.2 Diff ci.yml zawiera tylko oczekiwane zmiany, brak resztek --var — ba12cde
 
 ### Phase 4: End-to-End Verification
 
 #### Automated
 
-- [ ] 4.1 GitHub Actions pokazuje dwa zielone jody ci + deploy po push do master
-- [ ] 4.2 Logi deploy job zawierają link do live URL i zakończenie wranglera sukcesem
+- [x] 4.1 GitHub Actions pokazuje dwa zielone jody ci + deploy po push do master
+- [x] 4.2 Logi deploy job zawierają link do live URL i zakończenie wranglera sukcesem
 
 #### Manual
 
-- [ ] 4.3 Live URL odpowiada i wyświetla landing page
-- [ ] 4.4 Logowanie działa na live URL
-- [ ] 4.5 Generowanie planu treningowego zwraca wynik AI
-- [ ] 4.6 Usunięcie konta przechodzi bez błędu
+- [x] 4.3 Live URL odpowiada i wyświetla landing page
+- [x] 4.4 Logowanie działa na live URL
+- [x] 4.5 Generowanie planu treningowego zwraca wynik AI
+- [x] 4.6 Usunięcie konta przechodzi bez błędu
