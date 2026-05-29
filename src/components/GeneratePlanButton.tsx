@@ -5,9 +5,19 @@ interface Props {
   label?: string;
   disabled?: boolean;
   className?: string;
+  initialRideStats?: string;
+  initialGoal?: "speed" | "distance" | "";
+  updatePlanId?: string;
 }
 
-export function GeneratePlanButton({ label = "Generate plan", disabled = false, className }: Props) {
+export function GeneratePlanButton({
+  label = "Generate plan",
+  disabled = false,
+  className,
+  initialRideStats,
+  initialGoal,
+  updatePlanId,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -64,7 +74,12 @@ export function GeneratePlanButton({ label = "Generate plan", disabled = false, 
                 ×
               </button>
             </div>
-            <GeneratePlanForm disabled={disabled} />
+            <GeneratePlanForm
+              disabled={disabled}
+              initialRideStats={initialRideStats}
+              initialGoal={initialGoal}
+              updatePlanId={updatePlanId}
+            />
           </div>
         </div>
       )}

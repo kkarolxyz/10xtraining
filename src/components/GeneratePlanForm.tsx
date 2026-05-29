@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 
 interface Props {
   disabled?: boolean;
+  initialRideStats?: string;
+  initialGoal?: "speed" | "distance" | "";
+  updatePlanId?: string;
 }
 
 interface GenerateResponse {
@@ -10,9 +13,9 @@ interface GenerateResponse {
   error?: string;
 }
 
-export function GeneratePlanForm({ disabled = false }: Props) {
-  const [rideStats, setRideStats] = useState("");
-  const [goal, setGoal] = useState<"speed" | "distance" | "">("");
+export function GeneratePlanForm({ disabled = false, initialRideStats = "", initialGoal = "", updatePlanId }: Props) {
+  const [rideStats, setRideStats] = useState(initialRideStats);
+  const [goal, setGoal] = useState<"speed" | "distance" | "">(initialGoal);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,14 +34,19 @@ export function GeneratePlanForm({ disabled = false }: Props) {
 
     setIsLoading(true);
     try {
-      const res = await fetch("/api/plans/generate", {
+      const url = updatePlanId ? `/api/plans/${updatePlanId}` : "/api/plans/generate";
+      const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ rideStats, goal }),
       });
       const data = (await res.json()) as GenerateResponse;
       if (res.ok) {
-        window.location.href = `/plans/${data.planId}`;
+        if (updatePlanId) {
+          window.location.reload();
+        } else {
+          window.location.href = `/plans/${data.planId}`;
+        }
       } else {
         setError(data.error ?? "Something went wrong — please try again");
         setIsLoading(false);

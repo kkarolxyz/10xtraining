@@ -3,6 +3,8 @@ import Layout from "@/layouts/Layout.astro";
 import { createClient } from "@/lib/supabase";
 import type { Plan } from "@/types/database";
 import { DeletePlanButton } from "@/components/DeletePlanButton";
+import { GeneratePlanButton } from "@/components/GeneratePlanButton";
+import { OPENROUTER_API_KEY } from "astro:env/server";
 
 const { id } = Astro.params;
 
@@ -11,6 +13,8 @@ const queryResult = supabase ? await supabase.from("plans").select("*").eq("id",
 const plan = queryResult && !queryResult.error && queryResult.data ? (queryResult.data as Plan) : null;
 
 if (!plan) return Astro.redirect("/dashboard");
+
+const keyMissing = !OPENROUTER_API_KEY;
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
@@ -32,6 +36,14 @@ const sessionBadge: Record<string, string> = {
       <div class="mb-8">
         <div class="flex items-center justify-between">
           <a href="/dashboard" class="text-sm text-blue-100/60 hover:text-white">← Back to Dashboard</a>
+          <GeneratePlanButton
+            label="Regenerate plan"
+            disabled={keyMissing}
+            initialRideStats={plan.ride_stats}
+            initialGoal={plan.goal}
+            updatePlanId={plan.id}
+            client:only="react"
+          />
           <DeletePlanButton planId={plan.id} redirectAfterDelete="/dashboard" client:load />
         </div>
 

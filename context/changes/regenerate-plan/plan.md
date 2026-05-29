@@ -204,30 +204,30 @@ The link style mirrors the "← Back to Dashboard" style on the same line for vi
 
 #### Automated
 
-- [x] 1.1 Lint passes: `npm run lint`
-- [x] 1.2 Build succeeds: `npm run build`
+- [x] 1.1 Lint passes: `npm run lint` — b7e7d86
+- [x] 1.2 Build succeeds: `npm run build` — b7e7d86
 
 #### Manual
 
-- [x] 1.3 Dashboard with existing plans: clicking "+ Generate plan" opens modal overlay
-- [x] 1.4 Dashboard empty state: clicking "Generate plan" opens modal
-- [x] 1.5 ESC key closes the modal
-- [x] 1.6 Backdrop click closes the modal
-- [x] 1.7 × button closes the modal
-- [x] 1.8 Valid form submission generates plan and redirects to /plans/{id}
-- [x] 1.9 Form state resets when modal is reopened
+- [x] 1.3 Dashboard with existing plans: clicking "+ Generate plan" opens modal overlay — b7e7d86
+- [x] 1.4 Dashboard empty state: clicking "Generate plan" opens modal — b7e7d86
+- [x] 1.5 ESC key closes the modal — b7e7d86
+- [x] 1.6 Backdrop click closes the modal — b7e7d86
+- [x] 1.7 × button closes the modal — b7e7d86
+- [x] 1.8 Valid form submission generates plan and redirects to /plans/{id} — b7e7d86
+- [x] 1.9 Form state resets when modal is reopened — b7e7d86
 - [ ] 1.10 Missing API key: modal opens, form disabled
-- [x] 1.11 No regressions in plan list, delete, and sign-out
+- [x] 1.11 No regressions in plan list, delete, and sign-out — b7e7d86
 
 ### Phase 2: "Generate new plan" entry point on plan detail page
 
 #### Automated
 
-- [ ] 2.1 Lint passes: `npm run lint`
-- [ ] 2.2 Build succeeds: `npm run build`
+- [x] 2.1 Lint passes: `npm run lint` — b7e7d86
+- [x] 2.2 Build succeeds: `npm run build` — b7e7d86
 
 #### Manual
 
-- [ ] 2.3 Plan detail page shows "Generate new plan →" link in header row
-- [ ] 2.4 Clicking it navigates to /generate with empty form
-- [ ] 2.5 "← Back to Dashboard" still works
+- [x] 2.3 Plan detail page shows "Generate new plan →" link in header row
+- [x] 2.4 Clicking it navigates to /generate with empty form
+- [x] 2.5 "← Back to Dashboard" still works
