@@ -61,7 +61,10 @@ export async function generatePlan(rideStats: string, goal: PlanGoal): Promise<T
     throw new Error("OpenRouter returned an empty response.");
   }
 
-  const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/i, "").trim();
+  const cleaned = raw
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```\s*$/i, "")
+    .trim();
 
   let parsed: unknown;
   try {
