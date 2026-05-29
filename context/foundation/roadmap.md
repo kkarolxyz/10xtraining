@@ -33,7 +33,7 @@ Amatorowi kolarzowi brakuje narzędzia, które zamieni wklejone dane z ostatnieg
 | F-02 | llm-provider-wiring | (foundation) integracja z zewnętrznym LLM; scaffold promptu generującego plan treningowy gotowy    | —             | FR-006                                                                | blocked  |
 | S-01 | auth-generate-save  | zarejestrować się, zalogować, wkleić statystyki, wybrać cel, wygenerować plan i zapisać go; plan pojawia się na liście | F-01, F-02    | US-01, FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-009 | proposed |
 | S-02 | delete-plan         | usunąć zapisany plan ze swojej listy                                                              | S-01          | FR-011                                                                | proposed |
-| S-03 | regenerate-plan     | wygenerować nowy plan treningowy z poziomu listy planów bez ponownego wypełniania wszystkiego od zera | S-01       | FR-006                                                                | proposed |
+| S-03 | regenerate-plan     | wygenerować nowy plan treningowy z poziomu listy planów bez ponownego wypełniania wszystkiego od zera | S-01       | FR-006                                                                | done     |
 | S-04 | delete-account      | usunąć swoje konto wraz ze wszystkimi planami; po usunięciu jest wylogowany                        | S-01          | FR-012                                                               | proposed |
 
 ## Streams
@@ -123,7 +123,12 @@ Foundations poniżej zakładają, że poniższe warstwy są obecne i NIE re-scaf
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** minimalny — to ponowne użycie przepływu z S-01 (FR-006); główne ryzyko to przeładowanie UI dashboardu, jeśli formularz generowania i lista planów będą na tej samej stronie bez dobrego podziału stanu.
-- **Status:** proposed
+- **Status:** done
+- **Delivered:**
+  - Dashboard: przycisk „+ Generate plan" otwiera modal z formularzem GeneratePlanForm bezpośrednio na stronie (bez nawigacji do `/generate`); modal używa `client:only="react"` by uniknąć konfliktu SSR.
+  - Plan detail (`/plans/{id}`): przycisk „Regenerate plan" otwiera modal z wstępnie wypełnionymi danymi (`ride_stats`, `goal`) z bieżącego planu; po zatwierdzeniu plan jest zastępowany w miejscu (ten sam ID) przez nowy wynik AI — `POST /api/plans/{id}`.
+  - Baza: dodana polityka RLS `plans_update_own` (migracja `20260529000000`), wymagana do operacji UPDATE; wcześniej brakująca bo FR-010 (edycja) była odłożona.
+  - `DeletePlanButton`: po usunięciu ostatniego planu strona przeładowuje się do empty state.
 
 ### S-04: delete-account
 
@@ -167,4 +172,7 @@ Foundations poniżej zakładają, że poniższe warstwy są obecne i NIE re-scaf
 
 ## Done
 
-(Puste przy pierwszym generowaniu. `/10x-archive` dopisuje tutaj wpisy i zmienia Status elementu na `done`, gdy change o pasującym Change ID zostanie zarchiwizowany.)
+| ID   | Change ID           | Zamknięte  | Uwagi                                                                                      |
+|------|---------------------|------------|--------------------------------------------------------------------------------------------|
+| S-02 | delete-plan         | 2026-05-28 | Usuwanie planu z listy + strony szczegółów; RLS DELETE z F-01 pokrywa izolację danych.    |
+| S-03 | regenerate-plan     | 2026-05-29 | Modal generate na dashboardzie + regeneracja w miejscu z widoku planu; RLS UPDATE dodana. |
