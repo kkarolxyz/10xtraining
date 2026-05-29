@@ -223,11 +223,11 @@ The link style mirrors the "← Back to Dashboard" style on the same line for vi
 
 #### Automated
 
-- [x] 2.1 Lint passes: `npm run lint` — b7e7d86
-- [x] 2.2 Build succeeds: `npm run build` — b7e7d86
+- [x] 2.1 Lint passes: `npm run lint` — 7b6d96f
+- [x] 2.2 Build succeeds: `npm run build` — 7b6d96f
 
 #### Manual
 
-- [x] 2.3 Plan detail page shows "Generate new plan →" link in header row
-- [x] 2.4 Clicking it navigates to /generate with empty form
-- [x] 2.5 "← Back to Dashboard" still works
+- [x] 2.3 Plan detail page shows "Generate new plan →" link in header row — 7b6d96f
+- [x] 2.4 Clicking it navigates to /generate with empty form — 7b6d96f
+- [x] 2.5 "← Back to Dashboard" still works — 7b6d96f
