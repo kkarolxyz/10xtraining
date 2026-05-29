@@ -307,20 +307,20 @@ Connect the account page into the UI: add an "Account" link in Topbar for logged
 
 #### Automated
 
-- [x] 1.1 `npm run lint` passes with new env import and `createAdminClient` export
-- [x] 1.2 `npm run build` passes with `SUPABASE_SERVICE_ROLE_KEY` declared in env schema
+- [x] 1.1 `npm run lint` passes with new env import and `createAdminClient` export — 0ab3f5b
+- [x] 1.2 `npm run build` passes with `SUPABASE_SERVICE_ROLE_KEY` declared in env schema — 0ab3f5b
 
 #### Manual
 
-- [ ] 1.3 `.env.example` contains `SUPABASE_SERVICE_ROLE_KEY=###`
-- [ ] 1.4 Local `.env` and `.dev.vars` updated with real service role key
+- [x] 1.3 `.env.example` contains `SUPABASE_SERVICE_ROLE_KEY=###` — 0ab3f5b
+- [x] 1.4 Local `.env` and `.dev.vars` updated with real service role key — 0ab3f5b
 
 ### Phase 2: Delete-Account API Endpoint
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes on `src/pages/api/auth/delete-account.ts`
-- [ ] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes on `src/pages/api/auth/delete-account.ts`
+- [x] 2.2 `npm run build` passes
 
 #### Manual
 
