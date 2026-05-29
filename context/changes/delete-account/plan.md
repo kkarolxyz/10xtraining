@@ -338,23 +338,23 @@ Connect the account page into the UI: add an "Account" link in Topbar for logged
 
 #### Automated
 
-- [x] 4.1 `npm run lint` passes on `src/pages/account.astro` and updated `src/middleware.ts`
-- [x] 4.2 `npm run build` passes
+- [x] 4.1 `npm run lint` passes on `src/pages/account.astro` and updated `src/middleware.ts` — b49ba75
+- [x] 4.2 `npm run build` passes — b49ba75
 
 #### Manual
 
-- [ ] 4.3 `/account` without session redirects to `/auth/signin`
-- [ ] 4.4 `/account` with valid session renders with user email and Delete Account button
+- [x] 4.3 `/account` without session redirects to `/auth/signin` — b49ba75
+- [x] 4.4 `/account` with valid session renders with user email and Delete Account button — b49ba75
 
 ### Phase 5: Navigation & Landing Page Banner
 
 #### Automated
 
-- [ ] 5.1 `npm run lint` passes on updated `src/components/Topbar.astro` and `src/pages/index.astro`
-- [ ] 5.2 `npm run build` passes
+- [x] 5.1 `npm run lint` passes on updated `src/components/Topbar.astro` and `src/pages/index.astro`
+- [x] 5.2 `npm run build` passes
 
 #### Manual
 
-- [ ] 5.3 Topbar shows "Account" link for logged-in users
-- [ ] 5.4 `/?deleted=1` shows info banner; `/` without param does not
-- [ ] 5.5 Full end-to-end happy path verified (create account → generate plan → delete account → confirm gone from Supabase)
+- [x] 5.3 Topbar shows "Account" link for logged-in users
+- [x] 5.4 `/?deleted=1` shows info banner; `/` without param does not
+- [x] 5.5 Full end-to-end happy path verified (create account → generate plan → delete account → confirm gone from Supabase)

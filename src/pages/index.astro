@@ -1,8 +1,12 @@
 ---
 import Welcome from "@/components/Welcome.astro";
 import Layout from "@/layouts/Layout.astro";
+import Banner from "@/components/Banner.astro";
+
+const deleted = Astro.url.searchParams.get("deleted") === "1";
 ---
 
 <Layout>
+  {deleted && <Banner variant="info">Your account has been successfully deleted.</Banner>}
   <Welcome />
 </Layout>

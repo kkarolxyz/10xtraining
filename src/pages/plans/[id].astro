@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import Topbar from "@/components/Topbar.astro";
 import { createClient } from "@/lib/supabase";
 import type { Plan } from "@/types/database";
 import { DeletePlanButton } from "@/components/DeletePlanButton";
@@ -32,8 +33,9 @@ const sessionBadge: Record<string, string> = {
 
 <Layout title={plan.name}>
   <div class="bg-cosmic min-h-screen p-6 text-white">
+    <Topbar />
     <div class="mx-auto max-w-3xl">
-      <div class="mb-8">
+      <div class="mt-6 mb-8">
         <div class="flex items-center justify-between">
           <a href="/dashboard" class="text-sm text-blue-100/60 hover:text-white">← Back to Dashboard</a>
           <GeneratePlanButton
