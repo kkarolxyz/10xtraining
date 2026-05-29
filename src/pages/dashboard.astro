@@ -3,6 +3,8 @@ import Layout from "@/layouts/Layout.astro";
 import { createClient } from "@/lib/supabase";
 import type { Plan } from "@/types/database";
 import { DeletePlanButton } from "@/components/DeletePlanButton";
+import { GeneratePlanButton } from "@/components/GeneratePlanButton";
+import { OPENROUTER_API_KEY } from "astro:env/server";
 
 const supabase = createClient(Astro.request.headers, Astro.cookies);
 let plans: Plan[] = [];
@@ -11,6 +13,8 @@ if (supabase) {
   const { data } = await supabase.from("plans").select("*").order("created_at", { ascending: false });
   plans = (data ?? []) as Plan[];
 }
+
+const keyMissing = !OPENROUTER_API_KEY;
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -38,21 +42,16 @@ function formatDate(iso: string) {
         plans.length === 0 ? (
           <div class="rounded-2xl border border-white/10 bg-white/10 p-12 text-center backdrop-blur-xl">
             <p class="mb-6 text-blue-100/60">No plans yet — generate your first training plan.</p>
-            <a
-              href="/generate"
-              class="inline-block rounded-lg bg-purple-600 px-6 py-3 text-sm font-semibold transition-colors hover:bg-purple-500"
-            >
-              Generate plan
-            </a>
+            <GeneratePlanButton disabled={keyMissing} client:only="react" />
           </div>
         ) : (
           <div class="flex flex-col gap-4">
-            <a
-              href="/generate"
-              class="self-start rounded-lg bg-purple-600 px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-purple-500"
-            >
-              + Generate plan
-            </a>
+            <GeneratePlanButton
+              label="+ Generate plan"
+              disabled={keyMissing}
+              className="self-start"
+              client:only="react"
+            />
             {plans.map((plan) => (
               <div data-plan-id={plan.id} class="rounded-2xl border border-white/10 bg-white/10 backdrop-blur-xl">
                 <a href={`/plans/${plan.id}`} class="block p-6 transition-colors hover:bg-white/10">

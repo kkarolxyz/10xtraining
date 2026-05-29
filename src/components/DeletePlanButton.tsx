@@ -26,6 +26,9 @@ export function DeletePlanButton({ planId, redirectAfterDelete }: Props) {
           window.location.href = redirectAfterDelete;
         } else {
           ref.current?.closest("[data-plan-id]")?.remove();
+          if (!document.querySelector("[data-plan-id]")) {
+            window.location.reload();
+          }
         }
       } else {
         const data = (await res.json()) as DeleteResponse;
