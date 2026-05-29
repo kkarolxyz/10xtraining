@@ -5,18 +5,81 @@ import SignUpForm from "@/components/auth/SignUpForm";
 const error = Astro.url.searchParams.get("error");
 ---
 
+<style>
+  .wheel-spin {
+    animation: spin 40s linear infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
 <Layout title="Sign up">
-  <div class="bg-cosmic flex min-h-screen items-center justify-center p-4">
-    <div class="w-full max-w-sm rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
-      <h1
-        class="mb-6 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-center text-2xl font-bold text-transparent"
-      >
-        Sign up
-      </h1>
-      <SignUpForm serverError={error} client:load />
-      <p class="mt-4 text-center text-sm text-blue-100/60">
-        Already have an account? <a href="/auth/signin" class="text-purple-300 hover:underline">Sign in</a>
-      </p>
+  <div class="bg-cosmic flex min-h-screen">
+    <!-- Left panel: cycling hero (desktop only) -->
+    <div
+      class="relative hidden flex-col items-center justify-center overflow-hidden border-r border-white/10 lg:flex lg:w-1/2"
+    >
+      <div
+        class="pointer-events-none absolute -top-32 -left-32 h-[400px] w-[400px] rounded-full bg-purple-600/20 blur-[140px]"
+      ></div>
+      <div
+        class="pointer-events-none absolute -bottom-32 right-0 h-[350px] w-[350px] rounded-full bg-blue-500/15 blur-[120px]"
+      ></div>
+
+      <div class="relative z-10 px-12 text-center">
+        <svg
+          class="wheel-spin mx-auto mb-8 h-48 w-48 text-purple-300/20"
+          viewBox="0 0 200 200"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <circle cx="100" cy="100" r="90" stroke-width="3"></circle>
+          <circle cx="100" cy="100" r="10" stroke-width="3" fill="currentColor" fill-opacity="0.2"></circle>
+          <line x1="100" y1="10" x2="100" y2="190" stroke-width="1.5"></line>
+          <line x1="10" y1="100" x2="190" y2="100" stroke-width="1.5"></line>
+          <line x1="36" y1="36" x2="164" y2="164" stroke-width="1.5"></line>
+          <line x1="164" y1="36" x2="36" y2="164" stroke-width="1.5"></line>
+          <line x1="65" y1="15" x2="135" y2="185" stroke-width="1.5"></line>
+          <line x1="135" y1="15" x2="65" y2="185" stroke-width="1.5"></line>
+          <line x1="15" y1="65" x2="185" y2="135" stroke-width="1.5"></line>
+          <line x1="15" y1="135" x2="185" y2="65" stroke-width="1.5"></line>
+        </svg>
+
+        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-purple-300/60">10xTraining</p>
+        <h2
+          class="mb-4 bg-gradient-to-b from-white to-white/50 bg-clip-text text-6xl font-extrabold leading-none text-transparent"
+        >
+          Start<br />Training.
+        </h2>
+        <p class="mx-auto max-w-xs text-sm leading-relaxed text-blue-100/50">
+          Create your account and get your first personalised cycling plan in minutes.
+        </p>
+      </div>
+    </div>
+
+    <!-- Right panel: form -->
+    <div class="flex w-full items-center justify-center p-6 lg:w-1/2">
+      <div class="w-full max-w-sm rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
+        <h1
+          class="mb-6 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-center text-2xl font-bold text-transparent"
+        >
+          Sign up
+        </h1>
+        <SignUpForm serverError={error} client:load />
+        <p class="mt-4 text-center text-sm text-blue-100/60">
+          Already have an account? <a href="/auth/signin" class="text-purple-300 hover:underline">Sign in</a>
+        </p>
+      </div>
     </div>
   </div>
 </Layout>

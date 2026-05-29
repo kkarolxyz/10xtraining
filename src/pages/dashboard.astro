@@ -34,7 +34,7 @@ function formatDate(iso: string) {
 
       {
         plans.length === 0 ? (
-          <div class="rounded-2xl border border-white/10 bg-white/10 p-12 text-center backdrop-blur-xl">
+          <div class="rounded-2xl border border-white/10 bg-white/10 p-12 text-center">
             <p class="mb-6 text-blue-100/60">No plans yet — generate your first training plan.</p>
             <GeneratePlanButton disabled={keyMissing} client:only="react" />
           </div>

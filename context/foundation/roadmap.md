@@ -29,12 +29,13 @@ Amatorowi kolarzowi brakuje narzędzia, które zamieni wklejone dane z ostatnieg
 
 | ID   | Change ID           | Outcome (user can …)                                                                              | Prerequisites | PRD refs                                                              | Status   |
 |------|---------------------|---------------------------------------------------------------------------------------------------|---------------|-----------------------------------------------------------------------|----------|
-| F-01 | plans-db-schema     | (foundation) schemat tabeli `plans` + polityki RLS wdrożone; baza gotowa na zapis i odczyt planów  | —             | FR-007, FR-009, FR-011                                                | ready    |
-| F-02 | llm-provider-wiring | (foundation) integracja z zewnętrznym LLM; scaffold promptu generującego plan treningowy gotowy    | —             | FR-006                                                                | blocked  |
+| F-01 | plans-db-schema     | (foundation) schemat tabeli `plans` + polityki RLS wdrożone; baza gotowa na zapis i odczyt planów  | —             | FR-007, FR-009, FR-011                                                | done     |
+| F-02 | llm-provider-wiring | (foundation) integracja z zewnętrznym LLM; scaffold promptu generującego plan treningowy gotowy    | —             | FR-006                                                                | done     |
 | S-01 | auth-generate-save  | zarejestrować się, zalogować, wkleić statystyki, wybrać cel, wygenerować plan i zapisać go; plan pojawia się na liście | F-01, F-02    | US-01, FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-009 | proposed |
-| S-02 | delete-plan         | usunąć zapisany plan ze swojej listy                                                              | S-01          | FR-011                                                                | proposed |
+| S-02 | delete-plan         | usunąć zapisany plan ze swojej listy                                                              | S-01          | FR-011                                                                | done     |
 | S-03 | regenerate-plan     | wygenerować nowy plan treningowy z poziomu listy planów bez ponownego wypełniania wszystkiego od zera | S-01       | FR-006                                                                | done     |
-| S-04 | delete-account      | usunąć swoje konto wraz ze wszystkimi planami; po usunięciu jest wylogowany                        | S-01          | FR-012                                                               | proposed |
+| S-04 | delete-account      | usunąć swoje konto wraz ze wszystkimi planami; po usunięciu jest wylogowany                        | S-01          | FR-012                                                               | done     |
+| S-05 | ux-ui-polish        | korzystać z aplikacji z kolarskiem motywem — landing, auth, topbar z logo, spójne przyciski nawigacji | —          | —                                                                     | done     |
 
 ## Streams
 
@@ -70,7 +71,7 @@ Foundations poniżej zakładają, że poniższe warstwy są obecne i NIE re-scaf
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** brak migracji w obecnym kodzie; zdefiniowanie schematu i polityk RLS musi poprzedzać S-01 — pominięcie tego kroku powoduje, że nie ma gdzie zapisać planu ani jak wyegzekwować izolacji danych.
-- **Status:** ready
+- **Status:** done
 
 ### F-02: llm-provider-wiring
 
@@ -84,7 +85,7 @@ Foundations poniżej zakładają, że poniższe warstwy są obecne i NIE re-scaf
 - **Unknowns:**
   - Który dostawca LLM? (OpenAI, Anthropic, OpenRouter lub inny) — Owner: użytkownik. Block: yes.
 - **Risk:** dostawca LLM nie jest nazwany w tech-stack.md (tylko „external LLM API"); wybór wpływa na model cenowy, limity szybkości i latencję. Opóźnienie tej decyzji blokuje cały tor AI i przesuwa S-01. NFR: plan musi być widoczny w 30 sekund — wymaga to sprawdzenia latencji wybranego modelu.
-- **Status:** blocked
+- **Status:** done
 
 ## Slices
 
@@ -142,6 +143,18 @@ Foundations poniżej zakładają, że poniższe warstwy są obecne i NIE re-scaf
 - **Risk:** dane użytkownika są trwale kasowane i nie można ich odzyskać; operacja musi usuwać rekordy we wszystkich tabelach Supabase (plans + auth.users) i być chroniona przed przypadkowym wywołaniem (np. potwierdzenie hasłem lub dedykowany przycisk destrukcyjny).
 - **Status:** proposed
 
+### S-05: ux-ui-polish
+
+- **Outcome:** użytkownik widzi aplikację z kolarskiem motywem: landing page z hasłem „Train Smarter. Ride Faster." i kartami produktowymi, strony logowania/rejestracji w układzie split-screen z obracającym się kołem rowerowym i claimem, Topbar z logo (koło + „10xTraining") i nowoczesną nawigacją z hover-pill, przyciski „Back" spójne ze stylem reszty UI.
+- **Change ID:** ux-ui-polish
+- **PRD refs:** —
+- **Prerequisites:** —
+- **Parallel with:** —
+- **Blockers:** —
+- **Unknowns:** —
+- **Risk:** brak — zmiany czysto wizualne, bez wpływu na logikę auth ani persystencję danych.
+- **Status:** done
+
 ## Backlog Handoff
 
 | Roadmap ID | Change ID           | Suggested issue title                                          | Ready for `/10x-plan` | Notes                                          |
@@ -174,5 +187,9 @@ Foundations poniżej zakładają, że poniższe warstwy są obecne i NIE re-scaf
 
 | ID   | Change ID           | Zamknięte  | Uwagi                                                                                      |
 |------|---------------------|------------|--------------------------------------------------------------------------------------------|
+| F-01 | plans-db-schema     | —          | Migracja tabeli `plans` + polityki RLS (SELECT, INSERT, DELETE, UPDATE).                  |
+| F-02 | llm-provider-wiring | —          | OpenRouter jako dostawca LLM; scaffold promptu generującego plan treningowy.              |
 | S-02 | delete-plan         | 2026-05-28 | Usuwanie planu z listy + strony szczegółów; RLS DELETE z F-01 pokrywa izolację danych.    |
 | S-03 | regenerate-plan     | 2026-05-29 | Modal generate na dashboardzie + regeneracja w miejscu z widoku planu; RLS UPDATE dodana. |
+| S-04 | delete-account      | 2026-05-29 | Trwałe usunięcie konta przez admin API (service role key); kaskadowe usunięcie planów; strona /account + modal potwierdzenia; Topbar ujednolicony na wszystkich widokach. |
+| S-05 | ux-ui-polish        | 2026-05-30 | Landing page rebrand; split-screen signin/signup z kołem rowerowym i claimem; Topbar z logo + nawigacja hover-pill; „Back" jako bordowany przycisk spójny z UI. |

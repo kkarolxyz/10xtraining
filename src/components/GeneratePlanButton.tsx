@@ -40,7 +40,7 @@ export function GeneratePlanButton({
         onClick={() => {
           setIsOpen(true);
         }}
-        className={`rounded-lg bg-purple-600 px-6 py-3 text-sm font-semibold transition-colors hover:bg-purple-500${className ? ` ${className}` : ""}`}
+        className={`rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold transition-colors hover:bg-purple-500${className ? ` ${className}` : ""}`}
       >
         {label}
       </button>

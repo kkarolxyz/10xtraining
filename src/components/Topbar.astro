@@ -2,39 +2,77 @@
 const { user } = Astro.locals;
 ---
 
-<div
-  class="mb-4 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80"
+<nav
+  class="mb-6 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm backdrop-blur-xl"
 >
+  <!-- Logo -->
+  <a
+    href={user ? "/dashboard" : "/"}
+    class="flex items-center gap-2 font-semibold text-white transition-colors hover:text-purple-200"
+  >
+    <svg
+      class="h-5 w-5 shrink-0 text-purple-300"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <circle cx="12" cy="12" r="2.5" fill="currentColor" fill-opacity="0.25"></circle>
+      <line x1="12" y1="2" x2="12" y2="22"></line>
+      <line x1="2" y1="12" x2="22" y2="12"></line>
+      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+      <line x1="19.07" y1="4.93" x2="4.93" y2="19.07"></line>
+    </svg>
+    <span class="bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
+      10xTraining
+    </span>
+  </a>
+
+  <!-- Nav -->
   {
     user ? (
-      <>
-        <span class="text-blue-100/70">{user.email}</span>
-        <div class="flex items-center gap-3">
-          <a href="/dashboard" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
-            Dashboard
-          </a>
-          <a href="/account" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
-            Account
-          </a>
-          <form method="POST" action="/api/auth/signout">
-            <button type="submit" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
-              Sign out
-            </button>
-          </form>
-        </div>
-      </>
+      <div class="flex items-center gap-1">
+        <span class="mr-2 hidden text-blue-100/50 sm:inline">{user.email}</span>
+        <span class="mr-1 hidden text-white/15 sm:inline">|</span>
+        <a
+          href="/dashboard"
+          class="rounded-lg px-3 py-1.5 text-purple-300 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          Dashboard
+        </a>
+        <a
+          href="/account"
+          class="rounded-lg px-3 py-1.5 text-purple-300 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          Account
+        </a>
+        <form method="POST" action="/api/auth/signout">
+          <button
+            type="submit"
+            class="rounded-lg px-3 py-1.5 text-purple-300 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            Sign out
+          </button>
+        </form>
+      </div>
     ) : (
-      <>
-        <span class="text-blue-100/70">Not signed in</span>
-        <div class="flex gap-3">
-          <a href="/auth/signin" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
-            Sign in
-          </a>
-          <a href="/auth/signup" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
-            Sign up
-          </a>
-        </div>
-      </>
+      <div class="flex items-center gap-2">
+        <a
+          href="/auth/signin"
+          class="rounded-lg px-3 py-1.5 text-purple-300 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          Sign in
+        </a>
+        <a
+          href="/auth/signup"
+          class="rounded-lg bg-purple-600 px-4 py-1.5 font-medium text-white transition-colors hover:bg-purple-500"
+        >
+          Sign up
+        </a>
+      </div>
     )
   }
-</div>
+</nav>

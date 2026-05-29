@@ -43,7 +43,7 @@ export function DeletePlanButton({ planId, redirectAfterDelete }: Props) {
 
   return (
     <div ref={ref}>
-      <Button variant="destructive" size="sm" disabled={isDeleting} onClick={handleDelete}>
+      <Button variant="destructive" disabled={isDeleting} onClick={handleDelete}>
         {isDeleting ? "Deleting…" : "Delete"}
       </Button>
       {error && <p className="mt-2 text-sm text-red-300">{error}</p>}
