@@ -240,13 +240,13 @@ Add `DeletePlanButton` to the plan detail page header so users can delete a plan
 
 #### Automated
 
-- [x] 3.1 `npm run lint` passes
-- [x] 3.2 `npm run build` passes
+- [x] 3.1 `npm run lint` passes — 470b1fc
+- [x] 3.2 `npm run build` passes — 470b1fc
 
 #### Manual
 
-- [x] 3.3 Plan detail header shows "Delete" button
-- [x] 3.4 Clicking "Delete" redirects to `/dashboard` after deletion
-- [x] 3.5 Deleted plan no longer appears in the dashboard list
-- [x] 3.6 Navigating to deleted plan URL redirects to `/dashboard`
-- [x] 3.7 API failure shows inline error; user stays on detail page
+- [x] 3.3 Plan detail header shows "Delete" button — 470b1fc
+- [x] 3.4 Clicking "Delete" redirects to `/dashboard` after deletion — 470b1fc
+- [x] 3.5 Deleted plan no longer appears in the dashboard list — 470b1fc
+- [x] 3.6 Navigating to deleted plan URL redirects to `/dashboard` — 470b1fc
+- [x] 3.7 API failure shows inline error; user stays on detail page — 470b1fc
