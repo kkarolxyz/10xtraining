@@ -36,6 +36,7 @@ Amatorowi kolarzowi brakuje narzędzia, które zamieni wklejone dane z ostatnieg
 | S-03 | regenerate-plan     | wygenerować nowy plan treningowy z poziomu listy planów bez ponownego wypełniania wszystkiego od zera | S-01       | FR-006                                                                | done     |
 | S-04 | delete-account      | usunąć swoje konto wraz ze wszystkimi planami; po usunięciu jest wylogowany                        | S-01          | FR-012                                                               | done     |
 | S-05 | ux-ui-polish        | korzystać z aplikacji z kolarskiem motywem — landing, auth, topbar z logo, spójne przyciski nawigacji | —          | —                                                                     | done     |
+| S-06 | ci-cd-deploy        | każdy push do `master` automatycznie wdraża aplikację na Cloudflare Pages; live URL jest dostępny po kilku minutach od merge'a | —          | —                                                                     | proposed |
 
 ## Streams
 
@@ -45,6 +46,7 @@ Tabela nawigacyjna — grupuje elementy według wspólnego łańcucha zależnoś
 |--------|-----------------|---------------------------|------------------------------------------------------------------|
 | A      | Baza + flow     | `F-01` → `S-01` → `S-02` / `S-03` / `S-04` | Główny łańcuch; S-02, S-03, S-04 są równoległe po S-01; `F-02` (Stream B) dołącza przy `S-01`. |
 | B      | Integracja AI   | `F-02`                                      | Równolegle z F-01; dołącza do Streamu A przy `S-01`.             |
+| C      | Infra / deploy  | `S-06`                                      | Niezależny od Streamów A i B; może być wdrożony w dowolnym momencie. |
 
 ## Baseline
 
@@ -155,6 +157,19 @@ Foundations poniżej zakładają, że poniższe warstwy są obecne i NIE re-scaf
 - **Risk:** brak — zmiany czysto wizualne, bez wpływu na logikę auth ani persystencję danych.
 - **Status:** done
 
+### S-06: ci-cd-deploy
+
+- **Outcome:** każdy push do brancha `master` automatycznie wdraża aplikację na Cloudflare Pages; po zakończeniu pipeline'u (lint → build → deploy) live URL jest aktualny; środowisko produkcyjne (`SUPABASE_URL`, `SUPABASE_KEY`, `OPENROUTER_API_KEY`) jest skonfigurowane przez Cloudflare Pages secrets, a nie GitHub Secrets; deweloper widzi wynik deployu (sukces/błąd) bezpośrednio w GitHub Actions.
+- **Change ID:** ci-cd-deploy
+- **PRD refs:** —
+- **Prerequisites:** —
+- **Parallel with:** wszystkie pozostałe slices
+- **Blockers:** —
+- **Unknowns:**
+  - Czy token Cloudflare API (`CLOUDFLARE_API_TOKEN`) i `CLOUDFLARE_ACCOUNT_ID` są już dostępne jako GitHub Secrets? — Owner: użytkownik. Block: yes (bez tokenów deploy jest niemożliwy).
+- **Risk:** obecny `.github/workflows/ci.yml` kończy się na `npm run build` bez kroku deploy; dodanie deployu przy użyciu `wrangler` lub oficjalnej akcji `cloudflare/wrangler-action` wymaga jednorazowej konfiguracji tokenów i nazwy projektu Cloudflare Pages. Jeśli zmienne środowiskowe (Supabase, OpenRouter) nie zostaną ustawione po stronie Cloudflare Pages, build deploy przejdzie, ale aplikacja będzie niefunkcjonalna na produkcji.
+- **Status:** proposed
+
 ## Backlog Handoff
 
 | Roadmap ID | Change ID           | Suggested issue title                                          | Ready for `/10x-plan` | Notes                                          |
@@ -165,6 +180,7 @@ Foundations poniżej zakładają, że poniższe warstwy są obecne i NIE re-scaf
 | S-02       | delete-plan         | Usuwanie planu z listy (FR-011)                                | no                    | Wymaga S-01; równolegle z S-03, S-04           |
 | S-03       | regenerate-plan     | Ponowne generowanie planu z dashboardu (FR-006)                | no                    | Wymaga S-01; równolegle z S-02, S-04           |
 | S-04       | delete-account      | Usunięcie konta użytkownika i wszystkich danych                | no                    | Wymaga FR w PRD (patrz Q2) + S-01              |
+| S-06       | ci-cd-deploy        | Automatyczny deploy na Cloudflare Pages po każdym push do `master` | no               | Wymaga `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` jako GitHub Secrets |
 
 ## Open Roadmap Questions
 
