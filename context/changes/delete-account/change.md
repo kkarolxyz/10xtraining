@@ -1,7 +1,7 @@
 ---
 change_id: delete-account
 title: Permanent account deletion with cascade removal of all user plans
-status: implementing
+status: implemented
 created: 2026-05-29
 updated: 2026-05-29
 archived_at: null

@@ -350,11 +350,11 @@ Connect the account page into the UI: add an "Account" link in Topbar for logged
 
 #### Automated
 
-- [x] 5.1 `npm run lint` passes on updated `src/components/Topbar.astro` and `src/pages/index.astro`
-- [x] 5.2 `npm run build` passes
+- [x] 5.1 `npm run lint` passes on updated `src/components/Topbar.astro` and `src/pages/index.astro` — 1bc2718
+- [x] 5.2 `npm run build` passes — 1bc2718
 
 #### Manual
 
-- [x] 5.3 Topbar shows "Account" link for logged-in users
-- [x] 5.4 `/?deleted=1` shows info banner; `/` without param does not
-- [x] 5.5 Full end-to-end happy path verified (create account → generate plan → delete account → confirm gone from Supabase)
+- [x] 5.3 Topbar shows "Account" link for logged-in users — 1bc2718
+- [x] 5.4 `/?deleted=1` shows info banner; `/` without param does not — 1bc2718
+- [x] 5.5 Full end-to-end happy path verified (create account → generate plan → delete account → confirm gone from Supabase) — 1bc2718
