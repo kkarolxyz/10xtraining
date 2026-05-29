@@ -309,13 +309,13 @@ Replace the `/plans/[id]` stub with a full plan-detail page that fetches the pla
 
 #### Automated
 
-- [x] 3.1 `npm run lint` passes
-- [x] 3.2 `npm run build` passes
+- [x] 3.1 `npm run lint` passes — ece9fc7
+- [x] 3.2 `npm run build` passes — ece9fc7
 
 #### Manual
 
-- [x] 3.3 Plan detail shows 4 week cards × 7 day rows each
-- [x] 3.4 Session type badges are color-coded correctly
-- [x] 3.5 `/plans/nonexistent-id` redirects to `/dashboard`
-- [x] 3.6 Plan name, goal badge, and creation date display correctly
-- [x] 3.7 "← Back to Dashboard" link navigates to `/dashboard`
+- [x] 3.3 Plan detail shows 4 week cards × 7 day rows each — ece9fc7
+- [x] 3.4 Session type badges are color-coded correctly — ece9fc7
+- [x] 3.5 `/plans/nonexistent-id` redirects to `/dashboard` — ece9fc7
+- [x] 3.6 Plan name, goal badge, and creation date display correctly — ece9fc7
+- [x] 3.7 "← Back to Dashboard" link navigates to `/dashboard` — ece9fc7
