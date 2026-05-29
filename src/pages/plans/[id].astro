@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import { createClient } from "@/lib/supabase";
 import type { Plan } from "@/types/database";
+import { DeletePlanButton } from "@/components/DeletePlanButton";
 
 const { id } = Astro.params;
 
@@ -29,7 +30,10 @@ const sessionBadge: Record<string, string> = {
   <div class="bg-cosmic min-h-screen p-6 text-white">
     <div class="mx-auto max-w-3xl">
       <div class="mb-8">
-        <a href="/dashboard" class="text-sm text-blue-100/60 hover:text-white">← Back to Dashboard</a>
+        <div class="flex items-center justify-between">
+          <a href="/dashboard" class="text-sm text-blue-100/60 hover:text-white">← Back to Dashboard</a>
+          <DeletePlanButton planId={plan.id} redirectAfterDelete="/dashboard" client:load />
+        </div>
 
         <div class="mt-4 flex flex-wrap items-start gap-3">
           <h1 class="text-3xl font-bold">{plan.name}</h1>

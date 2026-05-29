@@ -224,29 +224,29 @@ Add `DeletePlanButton` to the plan detail page header so users can delete a plan
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes
-- [x] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes — da1e8bc
+- [x] 2.2 `npm run build` passes — da1e8bc
 
 #### Manual
 
-- [x] 2.3 Dashboard cards display correctly with "Delete" button row below each card
-- [x] 2.4 Card title/content area navigates to `/plans/{id}` as before
-- [x] 2.5 Clicking "Delete" removes the card from the page without a reload
-- [x] 2.6 Second click while deleting is blocked (button disabled)
-- [x] 2.7 API failure shows inline error; card remains; button re-enables
-- [x] 2.8 Empty-state dashboard layout unchanged
+- [x] 2.3 Dashboard cards display correctly with "Delete" button row below each card — da1e8bc
+- [x] 2.4 Card title/content area navigates to `/plans/{id}` as before — da1e8bc
+- [x] 2.5 Clicking "Delete" removes the card from the page without a reload — da1e8bc
+- [x] 2.6 Second click while deleting is blocked (button disabled) — da1e8bc
+- [x] 2.7 API failure shows inline error; card remains; button re-enables — da1e8bc
+- [x] 2.8 Empty-state dashboard layout unchanged — da1e8bc
 
 ### Phase 3: Delete Button on Plan Detail Page
 
 #### Automated
 
-- [ ] 3.1 `npm run lint` passes
-- [ ] 3.2 `npm run build` passes
+- [x] 3.1 `npm run lint` passes
+- [x] 3.2 `npm run build` passes
 
 #### Manual
 
-- [ ] 3.3 Plan detail header shows "Delete" button
-- [ ] 3.4 Clicking "Delete" redirects to `/dashboard` after deletion
-- [ ] 3.5 Deleted plan no longer appears in the dashboard list
-- [ ] 3.6 Navigating to deleted plan URL redirects to `/dashboard`
-- [ ] 3.7 API failure shows inline error; user stays on detail page
+- [x] 3.3 Plan detail header shows "Delete" button
+- [x] 3.4 Clicking "Delete" redirects to `/dashboard` after deletion
+- [x] 3.5 Deleted plan no longer appears in the dashboard list
+- [x] 3.6 Navigating to deleted plan URL redirects to `/dashboard`
+- [x] 3.7 API failure shows inline error; user stays on detail page
