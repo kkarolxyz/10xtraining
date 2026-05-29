@@ -331,15 +331,15 @@ Connect the account page into the UI: add an "Account" link in Topbar for logged
 
 #### Automated
 
-- [x] 3.1 `npm run lint` passes on `src/components/DeleteAccountButton.tsx`
-- [x] 3.2 `npm run build` passes
+- [x] 3.1 `npm run lint` passes on `src/components/DeleteAccountButton.tsx` — e875350
+- [x] 3.2 `npm run build` passes — e875350
 
 ### Phase 4: Account Settings Page
 
 #### Automated
 
-- [ ] 4.1 `npm run lint` passes on `src/pages/account.astro` and updated `src/middleware.ts`
-- [ ] 4.2 `npm run build` passes
+- [x] 4.1 `npm run lint` passes on `src/pages/account.astro` and updated `src/middleware.ts`
+- [x] 4.2 `npm run build` passes
 
 #### Manual
 
