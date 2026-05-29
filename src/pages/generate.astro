@@ -1,14 +1,33 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import Banner from "@/components/Banner.astro";
+import { GeneratePlanForm } from "@/components/GeneratePlanForm";
+import { OPENROUTER_API_KEY } from "astro:env/server";
+
+const keyMissing = !OPENROUTER_API_KEY;
 ---
 
 <Layout title="Generate Plan">
-  <div class="bg-cosmic flex min-h-screen items-center justify-center p-4">
-    <div class="rounded-2xl border border-white/10 bg-white/10 p-8 text-center text-white backdrop-blur-xl">
-      <h1 class="mb-4 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-3xl font-bold text-transparent">
-        Generate Plan
-      </h1>
-      <p class="text-sm text-blue-100/50">Coming soon…</p>
+  <div class="bg-cosmic min-h-screen p-6 text-white">
+    <div class="mx-auto max-w-xl">
+      <div class="mb-8 flex items-center justify-between">
+        <h1 class="bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-3xl font-bold text-transparent">
+          Generate Plan
+        </h1>
+        <a href="/dashboard" class="text-sm text-blue-100/60 hover:text-white">← Dashboard</a>
+      </div>
+
+      {
+        keyMissing && (
+          <Banner variant="error">
+            Plan generation is not configured — add <strong>OPENROUTER_API_KEY</strong> to your environment.
+          </Banner>
+        )
+      }
+
+      <div class="mt-6 rounded-2xl border border-white/10 bg-white/10 p-8 backdrop-blur-xl">
+        <GeneratePlanForm disabled={keyMissing} client:load />
+      </div>
     </div>
   </div>
 </Layout>

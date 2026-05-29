@@ -281,29 +281,29 @@ Replace the `/plans/[id]` stub with a full plan-detail page that fetches the pla
 
 #### Automated
 
-- [x] 1.1 `npm run lint` passes
-- [x] 1.2 `npm run build` passes
+- [x] 1.1 `npm run lint` passes — ce2db32
+- [x] 1.2 `npm run build` passes — ce2db32
 
 #### Manual
 
-- [x] 1.3 Sign-in redirects to `/dashboard`
-- [x] 1.4 `/generate` unauthenticated → redirects to `/auth/signin`
-- [x] 1.5 `/plans/any-uuid` unauthenticated → redirects to `/auth/signin`
+- [x] 1.3 Sign-in redirects to `/dashboard` — ce2db32
+- [x] 1.4 `/generate` unauthenticated → redirects to `/auth/signin` — ce2db32
+- [x] 1.5 `/plans/any-uuid` unauthenticated → redirects to `/auth/signin` — ce2db32
 
 ### Phase 2: Dashboard + Generate Form + API
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes
-- [ ] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes
+- [x] 2.2 `npm run build` passes
 
 #### Manual
 
-- [ ] 2.3 Dashboard shows empty state with "Generate plan" CTA
-- [ ] 2.4 Empty stats input shows inline error without API call
-- [ ] 2.5 Valid submit: loading state visible, redirects to `/plans/{id}`
-- [ ] 2.6 Plan appears in dashboard list after generation
-- [ ] 2.7 Missing `OPENROUTER_API_KEY` disables submit with banner
+- [x] 2.3 Dashboard shows empty state with "Generate plan" CTA
+- [x] 2.4 Empty stats input shows inline error without API call
+- [x] 2.5 Valid submit: loading state visible, redirects to `/plans/{id}`
+- [x] 2.6 Plan appears in dashboard list after generation
+- [x] 2.7 Missing `OPENROUTER_API_KEY` disables submit with banner
 
 ### Phase 3: Plan Detail Page
 
