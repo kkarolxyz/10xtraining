@@ -319,20 +319,20 @@ Connect the account page into the UI: add an "Account" link in Topbar for logged
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes on `src/pages/api/auth/delete-account.ts`
-- [x] 2.2 `npm run build` passes
+- [x] 2.1 `npm run lint` passes on `src/pages/api/auth/delete-account.ts` — b28fcb7
+- [x] 2.2 `npm run build` passes — b28fcb7
 
 #### Manual
 
-- [ ] 2.3 Unauthenticated DELETE returns 401
-- [ ] 2.4 Authenticated DELETE removes user from Supabase Auth and cascades to plans
+- [x] 2.3 Unauthenticated DELETE returns 401 — b28fcb7
+- [x] 2.4 Authenticated DELETE removes user from Supabase Auth and cascades to plans — b28fcb7
 
 ### Phase 3: DeleteAccountButton Component
 
 #### Automated
 
-- [ ] 3.1 `npm run lint` passes on `src/components/DeleteAccountButton.tsx`
-- [ ] 3.2 `npm run build` passes
+- [x] 3.1 `npm run lint` passes on `src/components/DeleteAccountButton.tsx`
+- [x] 3.2 `npm run build` passes
 
 ### Phase 4: Account Settings Page
 
