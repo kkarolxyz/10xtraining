@@ -431,27 +431,27 @@ and selects Phase 2 on next invocation.
 
 #### Automated
 
-- [x] 1.1 `npm install` completes without peer-dependency errors
-- [x] 1.2 `npm test` exits 0 with smoke test passing
-- [x] 1.3 `npm run lint` passes on all new Phase 1 files
+- [x] 1.1 `npm install` completes without peer-dependency errors — 64db7a9
+- [x] 1.2 `npm test` exits 0 with smoke test passing — 64db7a9
+- [x] 1.3 `npm run lint` passes on all new Phase 1 files — 64db7a9
 - [ ] 1.4 CI job passes on push with Phase 1 changes
 
 #### Manual
 
-- [x] 1.5 `wrangler --version` shows 4.100.x after upgrade
-- [x] 1.6 `npx vitest run --reporter=verbose` shows smoke test by name
+- [x] 1.5 `wrangler --version` shows 4.100.x after upgrade — 64db7a9
+- [x] 1.6 `npx vitest run --reporter=verbose` shows smoke test by name — 64db7a9
 
 ### Phase 2: R4 — sparse input rejection tests
 
 #### Automated
 
-- [ ] 2.1 `npm test` exits 0 with all R4 tests green
-- [ ] 2.2 `npm run lint` passes on `tests/lib/openrouter.r4.test.ts`
+- [x] 2.1 `npm test` exits 0 with all R4 tests green
+- [x] 2.2 `npm run lint` passes on `tests/lib/openrouter.r4.test.ts`
 
 #### Manual
 
-- [ ] 2.3 Test names are legible behaviours, not file paths
-- [ ] 2.4 Boundary test (2 lines) fails with a different error, not R4 message
+- [x] 2.3 Test names are legible behaviours, not file paths
+- [x] 2.4 Boundary test (2 lines) fails with a different error, not R4 message
 
 ### Phase 3: R1 — LLM error handling tests
 
