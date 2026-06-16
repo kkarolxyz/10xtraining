@@ -73,7 +73,7 @@ orchestrator updates Status and Change folder as artifacts appear on disk.
 |---|---|---|---|---|---|---|
 | 1 | Bootstrap + plan generation | Install vitest with Cloudflare Workers pool; prove LLM errors are caught before save; prove sparse input is rejected server-side | R1, R4 | integration (API endpoints, mocked LLM) | complete | context/changes/testing-bootstrap-plan-generation |
 | 2 | Data isolation + auth boundary | Prove User A cannot reach User B's data; prove expired session is blocked and not silently passed through | R2, R3 | integration (API routes, middleware) | complete | context/changes/testing-data-isolation-auth-boundary |
-| 3 | Account lifecycle + quality gates | Prove account deletion cascades completely; wire test run into CI before the build step; add test gate to pre-commit | R5 (smoke), R6 | integration (Supabase test client), CI YAML update, pre-commit hook | not started | — |
+| 3 | Account lifecycle + quality gates | Prove account deletion cascades completely; wire test run into CI before the build step; add test gate to pre-commit | R5 (smoke), R6 | integration (Supabase test client), CI YAML update, pre-commit hook | researched | context/changes/testing-account-lifecycle |
 
 ---
 
