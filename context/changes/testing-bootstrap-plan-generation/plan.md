@@ -471,11 +471,11 @@ and selects Phase 2 on next invocation.
 
 #### Automated
 
-- [x] 4.1 `npm test` exits 0 after doc changes (no regressions)
-- [x] 4.2 `npm run lint` passes after doc changes
+- [x] 4.1 `npm test` exits 0 after doc changes (no regressions) — c7d853a
+- [x] 4.2 `npm run lint` passes after doc changes — c7d853a
 
 #### Manual
 
-- [x] 4.3 `test-plan.md §6.1` reads as a self-contained guide
-- [x] 4.4 `test-plan.md §3` Phase 1 row shows `complete`
-- [x] 4.5 `/10x-test-plan` advances to Phase 2 handoff
+- [x] 4.3 `test-plan.md §6.1` reads as a self-contained guide — c7d853a
+- [x] 4.4 `test-plan.md §3` Phase 1 row shows `complete` — c7d853a
+- [x] 4.5 `/10x-test-plan` advances to Phase 2 handoff — c7d853a
