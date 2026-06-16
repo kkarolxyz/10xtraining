@@ -6,7 +6,7 @@
 >
 > Refresh: re-run `/10x-test-plan --refresh` when stale (see §8).
 >
-> Last updated: 2026-06-16 (Phase 2 complete)
+> Last updated: 2026-06-16 (Phase 3 complete)
 
 ---
 
@@ -73,7 +73,7 @@ orchestrator updates Status and Change folder as artifacts appear on disk.
 |---|---|---|---|---|---|---|
 | 1 | Bootstrap + plan generation | Install vitest with Cloudflare Workers pool; prove LLM errors are caught before save; prove sparse input is rejected server-side | R1, R4 | integration (API endpoints, mocked LLM) | complete | context/changes/testing-bootstrap-plan-generation |
 | 2 | Data isolation + auth boundary | Prove User A cannot reach User B's data; prove expired session is blocked and not silently passed through | R2, R3 | integration (API routes, middleware) | complete | context/changes/testing-data-isolation-auth-boundary |
-| 3 | Account lifecycle + quality gates | Prove account deletion cascades completely; wire test run into CI before the build step; add test gate to pre-commit | R5 (smoke), R6 | integration (Supabase test client), CI YAML update, pre-commit hook | researched | context/changes/testing-account-lifecycle |
+| 3 | Account lifecycle + quality gates | Prove account deletion cascades completely; wire test run into CI before the build step; add test gate to pre-commit | R5 (smoke), R6 | integration (Supabase test client), CI YAML update, pre-commit hook | complete | context/changes/testing-account-lifecycle |
 
 ---
 
@@ -274,9 +274,100 @@ function makeCtx(pathname: string) {
 
 ---
 
-#### Account deletion cascade (TBD — see §3 Phase 3)
+#### Account deletion cascade + RLS enforcement (shipped in Phase 3)
 
-TBD — Phase 3 will cover: Supabase test client, delete account → query plans for that user ID, verify 0 rows.
+**Location**: `tests/integration/` — real-DB tests, NOT in the workerd pool.
+
+**Why a separate pool**: `import { env } from "cloudflare:test"` fails in this project because `wrangler.jsonc:main` (`@astrojs/cloudflare/entrypoints/server`) only exists after `npm run build`. Integration tests therefore run in the **Node.js vitest pool** via `vitest.integration.config.ts`. The main `vitest.config.ts` explicitly includes only `tests/lib`, `tests/api`, and `tests/smoke`.
+
+**Run command**
+
+```bash
+npm test                                                           # full suite (workerd + integration)
+npx vitest run --config vitest.integration.config.ts               # integration only
+npx vitest run --config vitest.integration.config.ts --reporter=verbose  # with test names
+```
+
+**Env var access pattern**
+
+Credentials live in `.dev.vars`. A `globalSetup` file (`tests/integration/setup.ts`) parses `.dev.vars` at startup and writes each key into `process.env`. Inside test files:
+
+```typescript
+const SUPABASE_URL = process.env.SUPABASE_URL ?? "";
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+const SUPABASE_KEY = process.env.SUPABASE_KEY ?? "";
+```
+
+Do **not** use `import { env } from "cloudflare:test"` — it fails without a built worker artifact.
+
+**Skip guard (required on every integration describe)**
+
+```typescript
+describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R6 — account deletion cascade", () => {
+  // ...
+});
+```
+
+When `.dev.vars` is absent (CI without credentials wired), the guard skips the entire suite — no failures.
+
+**Admin client** (service role key — bypasses RLS, can call `auth.admin.*`)
+
+```typescript
+const adminClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+  auth: { persistSession: false },
+});
+```
+
+**User B client** (authenticated as a real user — RLS uses `auth.uid()`)
+
+A bare anon-key client has `auth.uid() = null`, which blocks reads for the wrong reason (unauthenticated, not cross-user). To test RLS isolation, User B must sign in first:
+
+```typescript
+const anonClient = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+const { data: signInData } = await anonClient.auth.signInWithPassword({ email, password });
+
+const userBClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
+  global: { headers: { Authorization: `Bearer ${signInData.session!.access_token}` } },
+  auth: { persistSession: false },
+});
+```
+
+**Cleanup pattern**
+
+```typescript
+afterAll(async () => {
+  if (userAId) await adminClient.auth.admin.deleteUser(userAId).catch(() => {});
+  if (userBId) await adminClient.auth.admin.deleteUser(userBId).catch(() => {});
+  // cascade removes plans rows automatically via ON DELETE CASCADE
+});
+```
+
+Always wrap cleanup in `.catch(() => {})` — `afterAll` must tolerate the case where the test already deleted the user.
+
+**Oracle rule**
+
+Assert DB state (row count, auth error), **not** HTTP response codes:
+
+```typescript
+// R6 — cascade fired
+const { data } = await adminClient.from("plans").select("id").eq("user_id", testUserId);
+expect(data).toHaveLength(0);                   // cascade removed the row
+
+// R6 — re-login rejected
+const { data: authData, error } = await anonClient.auth.signInWithPassword({ ... });
+expect(error).not.toBeNull();
+expect(authData.user).toBeNull();
+
+// R2 — RLS blocks cross-user read (use .select(), never .single())
+const { data: rlsData, error: rlsErr } = await userBClient.from("plans").select("id").eq("id", planAId);
+expect(rlsErr).toBeNull();                      // RLS returns empty, not an error code
+expect(rlsData).toHaveLength(0);
+```
+
+**Reference tests**
+
+- `tests/integration/account-lifecycle.r6.test.ts` — deletion cascade + re-login rejected
+- `tests/integration/plans-read-rls.r2.test.ts` — RLS blocks cross-user plan read via authenticated User B session
 
 ### 6.4 Per-rollout-phase notes
 

@@ -327,20 +327,20 @@ Fill in `context/foundation/test-plan.md §6.3` with the integration test patter
 
 #### Automated
 
-- [x] 3.1 `npm test` passes (no regression from hook change)
+- [x] 3.1 `npm test` passes (no regression from hook change) — ed9d032
 
 #### Manual
 
-- [x] 3.2 Stage a `.ts` file with a failing test; confirm `git commit` is blocked
-- [x] 3.3 Stage only a `.md` change; confirm `npm test` does not run and commit succeeds
+- [x] 3.2 Stage a `.ts` file with a failing test; confirm `git commit` is blocked — ed9d032
+- [x] 3.3 Stage only a `.md` change; confirm `npm test` does not run and commit succeeds — ed9d032
 
 ### Phase 4: Cookbook + Plan Sync
 
 #### Automated
 
-- [ ] 4.1 `npm test` passes
-- [ ] 4.2 `test-plan.md §3` Phase 3 row shows `complete`
+- [x] 4.1 `npm test` passes
+- [x] 4.2 `test-plan.md §3` Phase 3 row shows `complete`
 
 #### Manual
 
-- [ ] 4.3 §6.3 cookbook documents the integration test pattern completely enough for a new contributor
+- [x] 4.3 §6.3 cookbook documents the integration test pattern completely enough for a new contributor
