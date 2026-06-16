@@ -457,25 +457,25 @@ and selects Phase 2 on next invocation.
 
 #### Automated
 
-- [x] 3.1 `npm test` exits 0 with all R1 tests green
-- [x] 3.2 `npm run lint` passes on `tests/lib/openrouter.r1.test.ts`
-- [x] 3.3 `vi.mock('openai', ...)` hoisting confirmed working in workerd env
+- [x] 3.1 `npm test` exits 0 with all R1 tests green — eb8f254
+- [x] 3.2 `npm run lint` passes on `tests/lib/openrouter.r1.test.ts` — eb8f254
+- [x] 3.3 `vi.mock('openai', ...)` hoisting confirmed working in workerd env — eb8f254
 
 #### Manual
 
-- [x] 3.4 Happy-path test returns a plan matching PRD structural spec (4 weeks, 7 days)
-- [x] 3.5 Missing API key test fires without a real network call
-- [x] 3.6 No `expect` value was copied from `openrouter.ts` — each is oracle-grounded
+- [x] 3.4 Happy-path test returns a plan matching PRD structural spec (4 weeks, 7 days) — eb8f254
+- [x] 3.5 Missing API key test fires without a real network call — eb8f254
+- [x] 3.6 No `expect` value was copied from `openrouter.ts` — each is oracle-grounded — eb8f254
 
 ### Phase 4: Cookbook + plan sync
 
 #### Automated
 
-- [ ] 4.1 `npm test` exits 0 after doc changes (no regressions)
-- [ ] 4.2 `npm run lint` passes after doc changes
+- [x] 4.1 `npm test` exits 0 after doc changes (no regressions)
+- [x] 4.2 `npm run lint` passes after doc changes
 
 #### Manual
 
-- [ ] 4.3 `test-plan.md §6.1` reads as a self-contained guide
-- [ ] 4.4 `test-plan.md §3` Phase 1 row shows `complete`
-- [ ] 4.5 `/10x-test-plan` advances to Phase 2 handoff
+- [x] 4.3 `test-plan.md §6.1` reads as a self-contained guide
+- [x] 4.4 `test-plan.md §3` Phase 1 row shows `complete`
+- [x] 4.5 `/10x-test-plan` advances to Phase 2 handoff

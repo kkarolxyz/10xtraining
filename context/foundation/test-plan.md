@@ -6,7 +6,7 @@
 >
 > Refresh: re-run `/10x-test-plan --refresh` when stale (see §8).
 >
-> Last updated: 2026-06-15 (Phase 1 change opened)
+> Last updated: 2026-06-16 (Phase 1 complete)
 
 ---
 
@@ -71,7 +71,7 @@ orchestrator updates Status and Change folder as artifacts appear on disk.
 
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
-| 1 | Bootstrap + plan generation | Install vitest with Cloudflare Workers pool; prove LLM errors are caught before save; prove sparse input is rejected server-side | R1, R4 | integration (API endpoints, mocked LLM) | change opened | context/changes/testing-bootstrap-plan-generation |
+| 1 | Bootstrap + plan generation | Install vitest with Cloudflare Workers pool; prove LLM errors are caught before save; prove sparse input is rejected server-side | R1, R4 | integration (API endpoints, mocked LLM) | complete | context/changes/testing-bootstrap-plan-generation |
 | 2 | Data isolation + auth boundary | Prove User A cannot reach User B's data; prove expired session is blocked and not silently passed through | R2, R3 | integration (API routes, middleware) | not started | — |
 | 3 | Account lifecycle + quality gates | Prove account deletion cascades completely; wire test run into CI before the build step; add test gate to pre-commit | R5 (smoke), R6 | integration (Supabase test client), CI YAML update, pre-commit hook | not started | — |
 
@@ -126,7 +126,61 @@ the relevant rollout phase ships; before that, the sub-section reads
 
 ### 6.1 Adding an integration test for an API endpoint
 
-TBD — see §3 Phase 1 (plan generation endpoint: mocked LLM, malformed response, sparse input rejection pattern).
+**Location**
+
+- `tests/lib/<module>.r<N>.test.ts` — library-level tests that call the module function directly (preferred when the function has clear inputs/outputs and can be isolated with a mock).
+- `tests/api/<route>.r<N>.test.ts` — HTTP handler tests via `SELF.fetch()` (use only when auth fixture complexity is worth the signal; see §3 Phase 2 for the auth boundary pattern).
+
+**Run command**
+
+```bash
+npm test                                                   # full suite
+npx vitest run tests/lib/openrouter.r1.test.ts             # single file
+npx vitest run tests/lib/openrouter.r1.test.ts --reporter=verbose  # with names
+```
+
+**Naming convention**
+
+- `describe` block: `"<risk-code> — <risk name>"` (e.g. `"R1 — LLM error handling"`)
+- `it` block: one sentence naming the observable outcome, not the mechanism (e.g. `"throws when SDK returns non-JSON content"`, not `"calls JSON.parse"`)
+
+**Mock pattern**
+
+```typescript
+// 1. Hoist mutable state so mock factories can close over it
+const mockState = vi.hoisted(() => ({
+  apiKey: "test-api-key",   // string inferred; set to undefined in tests that need absence
+  create: vi.fn(),
+}));
+
+// 2. Mock the Astro virtual env module (module-level import in the target file)
+vi.mock("astro:env/server", () => ({
+  get OPENROUTER_API_KEY() { return mockState.apiKey; },
+}));
+
+// 3. Mock the OpenAI SDK at the class level — use a regular function, NOT an arrow,
+//    because arrow functions cannot be called with `new`
+vi.mock("openai", () => ({
+  default: vi.fn(function () {
+    return { chat: { completions: { create: mockState.create } } };
+  }),
+}));
+
+// 4. Reset between tests
+beforeEach(() => {
+  mockState.apiKey = "test-api-key";
+  mockState.create.mockReset();
+});
+```
+
+**Oracle rule**
+
+Expected values must come from the PRD acceptance criteria or from the literal error strings in the source file — never from running the code and capturing its output. A test that mirrors the implementation passes against bugs.
+
+**Reference tests**
+
+- `tests/lib/openrouter.r4.test.ts` — sparse-input rejection (no mock needed for the guard cases; boundary case exercises the API key check)
+- `tests/lib/openrouter.r1.test.ts` — LLM error handling (SDK mock at class level, `vi.hoisted` for per-test API key control, PRD-grounded happy-path assertions)
 
 ### 6.2 Adding a data-isolation test
 
