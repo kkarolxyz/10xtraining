@@ -314,10 +314,10 @@ Update `context/foundation/test-plan.md` to reflect what Phase 2 shipped: fill i
 
 #### Automated
 
-- [x] 3.1 `npm test` still passes (no test files changed)
-- [x] 3.2 `context/foundation/test-plan.md §3` Phase 2 row reads `complete`
+- [x] 3.1 `npm test` still passes (no test files changed) — 9ac500c
+- [x] 3.2 `context/foundation/test-plan.md §3` Phase 2 row reads `complete` — 9ac500c
 
 #### Manual
 
-- [x] 3.3 §6.2 chainable-mock pattern and oracle rule are clear to a future implementer
-- [x] 3.4 §6.3 includes SSR deferral note
+- [x] 3.3 §6.2 chainable-mock pattern and oracle rule are clear to a future implementer — 9ac500c
+- [x] 3.4 §6.3 includes SSR deferral note — 9ac500c
