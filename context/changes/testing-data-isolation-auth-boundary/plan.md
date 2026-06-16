@@ -291,24 +291,24 @@ Update `context/foundation/test-plan.md` to reflect what Phase 2 shipped: fill i
 
 #### Automated
 
-- [x] 1.1 `npm test` passes with new `tests/api/plans-id.r2.test.ts`
-- [x] 1.2 `npm run lint` passes (no TypeScript errors in the new file)
+- [x] 1.1 `npm test` passes with new `tests/api/plans-id.r2.test.ts` — c761797
+- [x] 1.2 `npm run lint` passes (no TypeScript errors in the new file) — c761797
 
 #### Manual
 
-- [ ] 1.3 Confirm each assertion's expected value comes from PRD/source, not from running the code
+- [x] 1.3 Confirm each assertion's expected value comes from PRD/source, not from running the code
 
 ### Phase 2: R3 — Middleware Fix + Auth Boundary Tests
 
 #### Automated
 
-- [ ] 2.1 `npm test` passes with new `tests/lib/middleware.r3.test.ts`
-- [ ] 2.2 `npm run lint` passes (includes `src/middleware.ts` diff and new test file)
+- [x] 2.1 `npm test` passes with new `tests/lib/middleware.r3.test.ts`
+- [x] 2.2 `npm run lint` passes (includes `src/middleware.ts` diff and new test file)
 
 #### Manual
 
-- [ ] 2.3 Inspect `src/middleware.ts` diff — try/catch wraps only the `getUser()` call
-- [ ] 2.4 Confirm the throw-case test asserts redirect, not that an error was thrown
+- [x] 2.3 Inspect `src/middleware.ts` diff — try/catch wraps only the `getUser()` call
+- [x] 2.4 Confirm the throw-case test asserts redirect, not that an error was thrown
 
 ### Phase 3: Cookbook Sync
 
