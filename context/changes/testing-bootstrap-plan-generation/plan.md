@@ -445,27 +445,27 @@ and selects Phase 2 on next invocation.
 
 #### Automated
 
-- [x] 2.1 `npm test` exits 0 with all R4 tests green
-- [x] 2.2 `npm run lint` passes on `tests/lib/openrouter.r4.test.ts`
+- [x] 2.1 `npm test` exits 0 with all R4 tests green — d43900b
+- [x] 2.2 `npm run lint` passes on `tests/lib/openrouter.r4.test.ts` — d43900b
 
 #### Manual
 
-- [x] 2.3 Test names are legible behaviours, not file paths
-- [x] 2.4 Boundary test (2 lines) fails with a different error, not R4 message
+- [x] 2.3 Test names are legible behaviours, not file paths — d43900b
+- [x] 2.4 Boundary test (2 lines) fails with a different error, not R4 message — d43900b
 
 ### Phase 3: R1 — LLM error handling tests
 
 #### Automated
 
-- [ ] 3.1 `npm test` exits 0 with all R1 tests green
-- [ ] 3.2 `npm run lint` passes on `tests/lib/openrouter.r1.test.ts`
-- [ ] 3.3 `vi.mock('openai', ...)` hoisting confirmed working in workerd env
+- [x] 3.1 `npm test` exits 0 with all R1 tests green
+- [x] 3.2 `npm run lint` passes on `tests/lib/openrouter.r1.test.ts`
+- [x] 3.3 `vi.mock('openai', ...)` hoisting confirmed working in workerd env
 
 #### Manual
 
-- [ ] 3.4 Happy-path test returns a plan matching PRD structural spec (4 weeks, 7 days)
-- [ ] 3.5 Missing API key test fires without a real network call
-- [ ] 3.6 No `expect` value was copied from `openrouter.ts` — each is oracle-grounded
+- [x] 3.4 Happy-path test returns a plan matching PRD structural spec (4 weeks, 7 days)
+- [x] 3.5 Missing API key test fires without a real network call
+- [x] 3.6 No `expect` value was copied from `openrouter.ts` — each is oracle-grounded
 
 ### Phase 4: Cookbook + plan sync
 
