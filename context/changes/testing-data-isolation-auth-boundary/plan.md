@@ -302,22 +302,22 @@ Update `context/foundation/test-plan.md` to reflect what Phase 2 shipped: fill i
 
 #### Automated
 
-- [x] 2.1 `npm test` passes with new `tests/lib/middleware.r3.test.ts`
-- [x] 2.2 `npm run lint` passes (includes `src/middleware.ts` diff and new test file)
+- [x] 2.1 `npm test` passes with new `tests/lib/middleware.r3.test.ts` — 0097c49
+- [x] 2.2 `npm run lint` passes (includes `src/middleware.ts` diff and new test file) — 0097c49
 
 #### Manual
 
-- [x] 2.3 Inspect `src/middleware.ts` diff — try/catch wraps only the `getUser()` call
-- [x] 2.4 Confirm the throw-case test asserts redirect, not that an error was thrown
+- [x] 2.3 Inspect `src/middleware.ts` diff — try/catch wraps only the `getUser()` call — 0097c49
+- [x] 2.4 Confirm the throw-case test asserts redirect, not that an error was thrown — 0097c49
 
 ### Phase 3: Cookbook Sync
 
 #### Automated
 
-- [ ] 3.1 `npm test` still passes (no test files changed)
-- [ ] 3.2 `context/foundation/test-plan.md §3` Phase 2 row reads `complete`
+- [x] 3.1 `npm test` still passes (no test files changed)
+- [x] 3.2 `context/foundation/test-plan.md §3` Phase 2 row reads `complete`
 
 #### Manual
 
-- [ ] 3.3 §6.2 chainable-mock pattern and oracle rule are clear to a future implementer
-- [ ] 3.4 §6.3 includes SSR deferral note
+- [x] 3.3 §6.2 chainable-mock pattern and oracle rule are clear to a future implementer
+- [x] 3.4 §6.3 includes SSR deferral note

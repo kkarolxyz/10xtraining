@@ -6,7 +6,7 @@
 >
 > Refresh: re-run `/10x-test-plan --refresh` when stale (see §8).
 >
-> Last updated: 2026-06-16 (Phase 1 complete)
+> Last updated: 2026-06-16 (Phase 2 complete)
 
 ---
 
@@ -72,7 +72,7 @@ orchestrator updates Status and Change folder as artifacts appear on disk.
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
 | 1 | Bootstrap + plan generation | Install vitest with Cloudflare Workers pool; prove LLM errors are caught before save; prove sparse input is rejected server-side | R1, R4 | integration (API endpoints, mocked LLM) | complete | context/changes/testing-bootstrap-plan-generation |
-| 2 | Data isolation + auth boundary | Prove User A cannot reach User B's data; prove expired session is blocked and not silently passed through | R2, R3 | integration (API routes, middleware) | not started | — |
+| 2 | Data isolation + auth boundary | Prove User A cannot reach User B's data; prove expired session is blocked and not silently passed through | R2, R3 | integration (API routes, middleware) | complete | context/changes/testing-data-isolation-auth-boundary |
 | 3 | Account lifecycle + quality gates | Prove account deletion cascades completely; wire test run into CI before the build step; add test gate to pre-commit | R5 (smoke), R6 | integration (Supabase test client), CI YAML update, pre-commit hook | not started | — |
 
 ---
@@ -184,11 +184,99 @@ Expected values must come from the PRD acceptance criteria or from the literal e
 
 ### 6.2 Adding a data-isolation test
 
-TBD — see §3 Phase 2 (ownership verification: cross-user plan access and middleware session guard pattern).
+**Location**
+
+`tests/api/<route>.r<N>.test.ts` — import the API route function directly; no HTTP server needed.
+
+**Chainable Supabase query-builder mock**
+
+The Supabase client uses a fluent builder: `.from().update().eq().eq()`. Every builder method must return the chain itself, and the chain must be thenable so `await chain` resolves without hanging.
+
+```typescript
+const mockState = vi.hoisted(() => {
+  const eqSpy = vi.fn().mockReturnThis();
+  const chain = {
+    update: vi.fn().mockReturnThis(),
+    delete: vi.fn().mockReturnThis(),
+    insert: vi.fn().mockReturnThis(),
+    select: vi.fn().mockReturnThis(),
+    single: vi.fn().mockReturnThis(),
+    eq: eqSpy,
+    // then must NOT use mockReturnThis — it must actually resolve
+    then(resolve: (v: { error: null; data: null }) => void, reject: (e: unknown) => void) {
+      return Promise.resolve({ error: null, data: null }).then(resolve, reject);
+    },
+  };
+  return { eqSpy, chain, createClient: vi.fn() };
+});
+
+vi.mock("@/lib/supabase", () => ({ createClient: mockState.createClient }));
+
+beforeEach(() => {
+  mockState.eqSpy.mockClear();
+  mockState.createClient.mockReturnValue({ from: vi.fn(() => mockState.chain) });
+});
+```
+
+**Oracle rule — assert the filter, not the response code**
+
+Assert that `.eq("user_id", authenticatedUserId)` appears in every plan-modifying query. Do NOT use the response status code as a proxy for ownership enforcement — when the ownership filter matches 0 rows, Supabase returns `{ error: null }` and the handler returns 200 with a silent no-op (see "Known gap" below).
+
+```typescript
+expect(mockState.eqSpy).toHaveBeenCalledWith("user_id", "user-a");
+```
+
+The oracle is the PRD NFR "data isolation is absolute", not the observed handler output.
+
+**Known gap**
+
+When User A POSTs or DELETEs using User B's plan ID, both handlers return 200 with a silent no-op (ownership filter matches 0 rows; Supabase returns no error). This is a correctness gap, not a security issue. Tests document 200 as the oracle and assert that the filter was applied; fixing the response code is out of scope.
+
+**Reference**
+
+- `tests/api/plans-id.r2.test.ts` — ownership filter + unauthenticated 401 for plan update/delete handlers.
 
 ### 6.3 Adding a test for the account lifecycle
 
-TBD — see §3 Phase 3 (account deletion cascade: Supabase test client, delete → verify no orphaned rows pattern).
+#### Auth boundary sub-pattern (shipped in Phase 2)
+
+**Location**: `tests/lib/middleware.r3.test.ts`
+
+**Pattern**: mock `astro:middleware` as an identity pass-through (it is a type helper, not logic), mock `@/lib/supabase` `createClient`, import `onRequest` directly, and construct a minimal context with `url`, `locals`, and a `redirect` spy.
+
+```typescript
+vi.mock("astro:middleware", () => ({
+  defineMiddleware: (fn: unknown) => fn,
+}));
+
+function makeCtx(pathname: string) {
+  return {
+    url: new URL(`http://localhost${pathname}`),
+    request: new Request(`http://localhost${pathname}`),
+    cookies: {},
+    locals: {} as App.Locals,
+    redirect: vi.fn((path: string) =>
+      new Response(null, { status: 302, headers: { Location: path } })
+    ),
+  };
+}
+```
+
+**Cases to always include**:
+- No session (`getUser` returns `{ data: { user: null } }`) + protected route → `redirect("/auth/signin")`
+- `getUser()` throws (network failure) + protected route → `redirect("/auth/signin")` — requires the try/catch fix in `src/middleware.ts` (landed in Phase 2)
+- Valid session + protected route → `next()` called, no redirect
+- No session + unprotected route (e.g. `/api/…`) → `next()` called (API routes self-protect via 401)
+
+**SSR read IDOR note** (`/plans/[id].astro`): the SSR route queries by plan ID with no app-layer `user_id` filter; isolation relies entirely on RLS. A hermetic mock cannot verify that RLS actually enforces ownership — deferred to Phase 3 with a real Supabase test project.
+
+**Reference**: `tests/lib/middleware.r3.test.ts`
+
+---
+
+#### Account deletion cascade (TBD — see §3 Phase 3)
+
+TBD — Phase 3 will cover: Supabase test client, delete account → query plans for that user ID, verify 0 rows.
 
 ### 6.4 Per-rollout-phase notes
 
