@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "test": "vitest run",
+    "test": "vitest run && vitest run --config vitest.integration.config.ts",
     "deploy": "wrangler deploy --config dist/server/wrangler.json"
   },
   "dependencies": {

@@ -302,15 +302,15 @@ Fill in `context/foundation/test-plan.md §6.3` with the integration test patter
 
 #### Automated
 
-- [ ] 1.1 `vitest.config.ts` excludes `tests/integration/**`; existing 20 workerd tests pass (`vitest run`)
-- [ ] 1.2 `tests/integration/setup.ts` and `vitest.integration.config.ts` created; `vitest run --config vitest.integration.config.ts` exits 0
-- [ ] 1.3 `package.json` test script updated; `npm test` runs both configs and exits 0
-- [ ] 1.4 `account-lifecycle.r6.test.ts` rewritten to use `process.env`; suite shows skipped (no credentials) or passed (credentials present)
+- [x] 1.1 `vitest.config.ts` excludes `tests/integration/**`; existing 20 workerd tests pass (`vitest run`)
+- [x] 1.2 `tests/integration/setup.ts` and `vitest.integration.config.ts` created; `vitest run --config vitest.integration.config.ts` exits 0
+- [x] 1.3 `package.json` test script updated; `npm test` runs both configs and exits 0
+- [x] 1.4 `account-lifecycle.r6.test.ts` rewritten to use `process.env`; suite shows skipped (no credentials) or passed (credentials present)
 
 #### Manual
 
-- [ ] 1.5 Run `npm test` locally with `.dev.vars` populated; both R6 `it` blocks pass
-- [ ] 1.6 Confirm no orphaned test user remains in dev Supabase dashboard after the run
+- [x] 1.5 Run `npm test` locally with `.dev.vars` populated; both R6 `it` blocks pass
+- [x] 1.6 Confirm no orphaned test user remains in dev Supabase dashboard after the run
 
 ### Phase 2: SSR RLS Verification
 
