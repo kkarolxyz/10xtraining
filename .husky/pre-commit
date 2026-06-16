@@ -1,1 +1,8 @@
+#!/usr/bin/env sh
+
+staged=$(git diff --cached --name-only)
+if echo "$staged" | grep -qE '\.(ts|tsx|astro)$'; then
+  npm test
+fi
+
 npx lint-staged

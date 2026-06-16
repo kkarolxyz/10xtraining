@@ -316,23 +316,23 @@ Fill in `context/foundation/test-plan.md §6.3` with the integration test patter
 
 #### Automated
 
-- [x] 2.1 `npm test` exits 0; R2 SSR suite shows skipped (no credentials) or passed (credentials present)
+- [x] 2.1 `npm test` exits 0; R2 SSR suite shows skipped (no credentials) or passed (credentials present) — 2778667
 
 #### Manual
 
-- [x] 2.2 Run `npm test` locally; cross-user read returns empty data and no error
-- [x] 2.3 Confirm no orphaned test users or plans remain in dev project after the run
+- [x] 2.2 Run `npm test` locally; cross-user read returns empty data and no error — 2778667
+- [x] 2.3 Confirm no orphaned test users or plans remain in dev project after the run — 2778667
 
 ### Phase 3: Pre-Commit Gate
 
 #### Automated
 
-- [ ] 3.1 `npm test` passes (no regression from hook change)
+- [x] 3.1 `npm test` passes (no regression from hook change)
 
 #### Manual
 
-- [ ] 3.2 Stage a `.ts` file with a failing test; confirm `git commit` is blocked
-- [ ] 3.3 Stage only a `.md` change; confirm `npm test` does not run and commit succeeds
+- [x] 3.2 Stage a `.ts` file with a failing test; confirm `git commit` is blocked
+- [x] 3.3 Stage only a `.md` change; confirm `npm test` does not run and commit succeeds
 
 ### Phase 4: Cookbook + Plan Sync
 
