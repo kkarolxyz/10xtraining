@@ -1,7 +1,7 @@
 ---
 change_id: testing-account-lifecycle
 title: Testing account lifecycle (Phase 3 — account deletion cascade + quality gates)
-status: implementing
+status: implemented
 created: 2026-06-16
 updated: 2026-06-16
 archived_at: null

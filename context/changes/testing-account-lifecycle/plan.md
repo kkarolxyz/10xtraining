@@ -338,9 +338,9 @@ Fill in `context/foundation/test-plan.md §6.3` with the integration test patter
 
 #### Automated
 
-- [x] 4.1 `npm test` passes
-- [x] 4.2 `test-plan.md §3` Phase 3 row shows `complete`
+- [x] 4.1 `npm test` passes — 7a7a8e0
+- [x] 4.2 `test-plan.md §3` Phase 3 row shows `complete` — 7a7a8e0
 
 #### Manual
 
-- [x] 4.3 §6.3 cookbook documents the integration test pattern completely enough for a new contributor
+- [x] 4.3 §6.3 cookbook documents the integration test pattern completely enough for a new contributor — 7a7a8e0
