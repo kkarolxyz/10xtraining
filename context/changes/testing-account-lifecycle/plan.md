@@ -302,26 +302,26 @@ Fill in `context/foundation/test-plan.md §6.3` with the integration test patter
 
 #### Automated
 
-- [x] 1.1 `vitest.config.ts` excludes `tests/integration/**`; existing 20 workerd tests pass (`vitest run`)
-- [x] 1.2 `tests/integration/setup.ts` and `vitest.integration.config.ts` created; `vitest run --config vitest.integration.config.ts` exits 0
-- [x] 1.3 `package.json` test script updated; `npm test` runs both configs and exits 0
-- [x] 1.4 `account-lifecycle.r6.test.ts` rewritten to use `process.env`; suite shows skipped (no credentials) or passed (credentials present)
+- [x] 1.1 `vitest.config.ts` excludes `tests/integration/**`; existing 20 workerd tests pass (`vitest run`) — 7606fd3
+- [x] 1.2 `tests/integration/setup.ts` and `vitest.integration.config.ts` created; `vitest run --config vitest.integration.config.ts` exits 0 — 7606fd3
+- [x] 1.3 `package.json` test script updated; `npm test` runs both configs and exits 0 — 7606fd3
+- [x] 1.4 `account-lifecycle.r6.test.ts` rewritten to use `process.env`; suite shows skipped (no credentials) or passed (credentials present) — 7606fd3
 
 #### Manual
 
-- [x] 1.5 Run `npm test` locally with `.dev.vars` populated; both R6 `it` blocks pass
-- [x] 1.6 Confirm no orphaned test user remains in dev Supabase dashboard after the run
+- [x] 1.5 Run `npm test` locally with `.dev.vars` populated; both R6 `it` blocks pass — 7606fd3
+- [x] 1.6 Confirm no orphaned test user remains in dev Supabase dashboard after the run — 7606fd3
 
 ### Phase 2: SSR RLS Verification
 
 #### Automated
 
-- [ ] 2.1 `npm test` exits 0; R2 SSR suite shows skipped (no credentials) or passed (credentials present)
+- [x] 2.1 `npm test` exits 0; R2 SSR suite shows skipped (no credentials) or passed (credentials present)
 
 #### Manual
 
-- [ ] 2.2 Run `npm test` locally; cross-user read returns empty data and no error
-- [ ] 2.3 Confirm no orphaned test users or plans remain in dev project after the run
+- [x] 2.2 Run `npm test` locally; cross-user read returns empty data and no error
+- [x] 2.3 Confirm no orphaned test users or plans remain in dev project after the run
 
 ### Phase 3: Pre-Commit Gate
 
