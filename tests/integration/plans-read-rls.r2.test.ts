@@ -73,8 +73,8 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R2 SSR — cross-user plan read blo
   });
 
   afterAll(async () => {
-    if (userAId) await adminClient.auth.admin.deleteUser(userAId).catch((_e) => undefined);
-    if (userBId) await adminClient.auth.admin.deleteUser(userBId).catch((_e) => undefined);
+    if (userAId) await adminClient.auth.admin.deleteUser(userAId).catch((_e: unknown) => undefined);
+    if (userBId) await adminClient.auth.admin.deleteUser(userBId).catch((_e: unknown) => undefined);
   });
 
   it("User B cannot read User A's plan (RLS blocks cross-user access)", async () => {
