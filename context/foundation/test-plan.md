@@ -336,7 +336,7 @@ const userBClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
 
 ```typescript
 afterAll(async () => {
-  if (userAId) await adminClient.auth.admin.deleteUser(userAId).catch(() => {});
+  if (userAId) await adminClient.auth.admin.deleteUser(userAId).catch(() => {});f
   if (userBId) await adminClient.auth.admin.deleteUser(userBId).catch(() => {});
   // cascade removes plans rows automatically via ON DELETE CASCADE
 });
@@ -368,6 +368,63 @@ expect(rlsData).toHaveLength(0);
 
 - `tests/integration/account-lifecycle.r6.test.ts` — deletion cascade + re-login rejected
 - `tests/integration/plans-read-rls.r2.test.ts` — RLS blocks cross-user plan read via authenticated User B session
+
+#### Error-branch sub-pattern (shipped in Phase 5)
+
+**Location**: `tests/api/delete-account.r8.test.ts` (workerd pool)
+
+**When to use**: any endpoint that calls an external SDK method which can both return `{ error }` *and* throw. These are distinct failure modes and require distinct stubs.
+
+**Mock scaffold** — hoist four spies, mock `@/lib/supabase`, wire happy-path defaults in `beforeEach`:
+
+```typescript
+const mockState = vi.hoisted(() => ({
+  deleteUser: vi.fn(),
+  signOut: vi.fn(),
+  createAdminClient: vi.fn(),
+  createClient: vi.fn(),
+}));
+
+vi.mock("@/lib/supabase", () => ({
+  createAdminClient: mockState.createAdminClient,
+  createClient: mockState.createClient,
+}));
+
+beforeEach(() => {
+  mockState.deleteUser.mockReset();
+  // ... reset all spies ...
+  mockState.deleteUser.mockResolvedValue({ error: null });   // happy-path default
+  mockState.createAdminClient.mockReturnValue({
+    auth: { admin: { deleteUser: mockState.deleteUser } },
+  });
+});
+```
+
+**P3 vs P4 stubs — not equivalent**:
+
+```typescript
+// P3: SDK resolves but signals failure in the return value
+mockState.deleteUser.mockResolvedValue({ error: new Error("db error") });
+
+// P4: SDK rejects (network failure, timeout, malformed response)
+mockState.deleteUser.mockRejectedValue(new Error("network failure"));
+```
+
+P4 requires a try-catch wrapping the `await` call in the endpoint. Without it, the throw propagates to the Astro runtime and returns an HTML error page, not `application/json`. Commit the fix before the test — a permanently-red suite is harder to debug than a missing test.
+
+**Oracle rule**: assert `response.status`, `response.headers.get("Content-Type")`, and that `body.error` is a non-empty string. Do **not** assert the exact error message text — that is an implementation detail.
+
+```typescript
+const body = (await response.json()) as { error: string };
+expect(response.status).toBe(500);
+expect(response.headers.get("Content-Type")).toBe("application/json");
+expect(typeof body.error).toBe("string");
+expect(body.error.length).toBeGreaterThan(0);
+```
+
+**Reference**: `tests/api/delete-account.r8.test.ts`
+
+---
 
 ### 6.4 Per-rollout-phase notes
 

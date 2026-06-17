@@ -15,11 +15,11 @@ if [[ -z "$FILE" ]]; then
 fi
 
 # Risk-area files — vitest related runs on edits to these (in addition to lint)
-# Phase 2 will add: src/pages/api/auth/delete-account.ts
 RISK_AREAS=(
   "src/middleware.ts"
   "src/lib/openrouter.ts"
   "src/pages/api/plans/[id].ts"
+  "src/pages/api/auth/delete-account.ts"
 )
 
 FAILED=0

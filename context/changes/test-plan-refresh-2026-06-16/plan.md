@@ -313,29 +313,29 @@ it to the list).
 
 #### Automated
 
-- [x] 1.1 `npm test` passes after settings.json edit
-- [x] 1.2 `bash -n .claude/hooks/post-edit.sh` exits 0
+- [x] 1.1 `npm test` passes after settings.json edit — d9b42fc
+- [x] 1.2 `bash -n .claude/hooks/post-edit.sh` exits 0 — d9b42fc
 
 #### Manual
 
-- [x] 1.3 Edit `src/middleware.ts` via agent — hook output visible in next-turn context
-- [x] 1.4 Edit a non-risk `.ts` file — lint runs, vitest does NOT run
-- [x] 1.5 Edit `src/pages/api/plans/[id].ts` — both lint and vitest run; no glob error
+- [x] 1.3 Edit `src/middleware.ts` via agent — hook output visible in next-turn context — d9b42fc
+- [x] 1.4 Edit a non-risk `.ts` file — lint runs, vitest does NOT run — d9b42fc
+- [x] 1.5 Edit `src/pages/api/plans/[id].ts` — both lint and vitest run; no glob error — d9b42fc
 
 ### Phase 2: Delete-Account Error Branches
 
 #### Automated
 
-- [ ] 2.1 `npm test` passes (both pools)
-- [ ] 2.2 `npx vitest related src/pages/api/auth/delete-account.ts --run` finds ≥5 tests
-- [ ] 2.3 All six paths (P1–P6) reported passed
-- [ ] 2.4 `npm run lint` passes on the new test file
+- [x] 2.1 `npm test` passes (both pools)
+- [x] 2.2 `npx vitest related src/pages/api/auth/delete-account.ts --run` finds ≥5 tests
+- [x] 2.3 All six paths (P1–P6) reported passed
+- [x] 2.4 `npm run lint` passes on the new test file
 
 #### Manual
 
-- [ ] 2.5 `delete-account.ts:22` is wrapped in try-catch (read the file to confirm)
-- [ ] 2.6 Each error path test asserts `Content-Type: application/json`
-- [ ] 2.7 P3 uses `mockResolvedValue({ error: ... })`, P4 uses `mockRejectedValue(...)`
+- [x] 2.5 `delete-account.ts:22` is wrapped in try-catch (read the file to confirm)
+- [x] 2.6 Each error path test asserts `Content-Type: application/json`
+- [x] 2.7 P3 uses `mockResolvedValue({ error: ... })`, P4 uses `mockRejectedValue(...)`
 
 ### Phase 3: Test-Plan.md Sync
 

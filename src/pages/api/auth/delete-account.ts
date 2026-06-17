@@ -19,10 +19,19 @@ export const DELETE: APIRoute = async (context) => {
     });
   }
 
-  const { error } = await adminClient.auth.admin.deleteUser(userId);
-  if (error) {
+  try {
+    const { error } = await adminClient.auth.admin.deleteUser(userId);
+    if (error) {
+      // eslint-disable-next-line no-console
+      console.error("deleteUser failed:", error);
+      return new Response(JSON.stringify({ error: "Failed to delete account" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  } catch (err) {
     // eslint-disable-next-line no-console
-    console.error("deleteUser failed:", error);
+    console.error("deleteUser threw:", err);
     return new Response(JSON.stringify({ error: "Failed to delete account" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
