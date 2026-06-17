@@ -74,6 +74,8 @@ orchestrator updates Status and Change folder as artifacts appear on disk.
 | 1 | Bootstrap + plan generation | Install vitest with Cloudflare Workers pool; prove LLM errors are caught before save; prove sparse input is rejected server-side | R1, R4 | integration (API endpoints, mocked LLM) | complete | context/changes/testing-bootstrap-plan-generation |
 | 2 | Data isolation + auth boundary | Prove User A cannot reach User B's data; prove expired session is blocked and not silently passed through | R2, R3 | integration (API routes, middleware) | complete | context/changes/testing-data-isolation-auth-boundary |
 | 3 | Account lifecycle + quality gates | Prove account deletion cascades completely; wire test run into CI before the build step; add test gate to pre-commit | R5 (smoke), R6 | integration (Supabase test client), CI YAML update, pre-commit hook | complete | context/changes/testing-account-lifecycle |
+| 4 | Per-edit hooks | Wire PostToolUse hook: lint on every edit, vitest related on risk-area file edits | R7 | Hook config + manual smoke | complete | context/changes/test-plan-refresh-2026-06-16 |
+| 5 | Delete-account error branches | Fix unhandled throw; hermetic tests for all six endpoint paths | R8 | hermetic (unit, workerd pool) | complete | context/changes/test-plan-refresh-2026-06-16 |
 
 ---
 
@@ -112,6 +114,7 @@ phase lands.
 |---|---|---|---|
 | lint + typecheck | local + CI | required (already wired in CI) | syntactic and type drift |
 | unit + integration | local + CI | required after §3 Phase 1 | logic regressions in generation and data isolation |
+| per-edit lint + scoped tests | local (PostToolUse hook) | required — wired in §3 Phase 4 | lint errors and risk-area test failures surfaced mid-session; hook covers lint always + vitest related for risk-area files (`src/middleware.ts`, `src/lib/openrouter.ts`, `src/pages/api/plans/[id].ts`, `src/pages/api/auth/delete-account.ts`) |
 | pre-commit test run | local (lint-staged) | required after §3 Phase 3 | regressions at commit time before they reach CI |
 | pre-prod smoke (latency) | staging | recommended after §3 Phase 3 | environment-specific failures and 30s NFR (R5) |
 | visual diff / e2e | CI on PR | not planned | excluded per §7 |
@@ -432,6 +435,39 @@ expect(body.error.length).toBeGreaterThan(0);
 
 ---
 
+### 6.5 Adding a risk-area file to the per-edit hook
+
+**Script location**: `.claude/hooks/post-edit.sh`
+
+The hook fires on every `Write` or `Edit` tool use (PostToolUse event in `.claude/settings.json`). It always runs `npx eslint "$FILE"`. It additionally runs `npx vitest related "$FILE" --run` when the edited file matches an entry in the `RISK_AREAS` array.
+
+**Adding a new entry**:
+
+1. Run `npx vitest related <file> --run` manually first to confirm the test is found and passes before adding it to the list. If `vitest related` returns 0 tests, the hook adds no signal — don't add the file.
+2. Open `.claude/hooks/post-edit.sh` and append the path to the `RISK_AREAS` array:
+
+   ```bash
+   RISK_AREAS=(
+     "src/middleware.ts"
+     "src/lib/openrouter.ts"
+     "src/pages/api/plans/[id].ts"
+     "src/pages/api/auth/delete-account.ts"
+     "src/your/new/file.ts"   # ← new entry
+   )
+   ```
+
+3. Run `bash -n .claude/hooks/post-edit.sh` to verify syntax.
+
+**Bracket-path quoting**: paths containing `[` or `]` (e.g. `src/pages/api/plans/[id].ts`) must appear as quoted strings in the array. The hook passes `"$FILE"` with double quotes in every command — this prevents shell glob expansion. Do not use unquoted interpolation.
+
+**`--run` flag**: always include `--run` when calling `vitest related` from a hook. Without it, vitest enters watch mode and the hook never exits.
+
+**`related` is a subcommand**: the correct form is `npx vitest related "$FILE" --run`, not `npx vitest --related "$FILE" --run`.
+
+**Verification**: edit the file (or simulate with `printf '{"tool_input":{"file_path":"<path>"}}' | bash .claude/hooks/post-edit.sh`) and confirm vitest output appears alongside the lint result.
+
+---
+
 ## 7. What We Deliberately Don't Test
 
 Exclusions agreed during the Phase 2 interview (Q5). Future contributors
@@ -445,8 +481,8 @@ should respect these unless the underlying assumption changes.
 
 ## 8. Freshness Ledger
 
-- Strategy (§1–§5) last reviewed: 2026-06-15
-- Stack versions last verified: 2026-06-15 (none installed yet — Phase 1 research will pin versions)
+- Strategy (§1–§5) last reviewed: 2026-06-17
+- Stack versions last verified: 2026-06-17
 - AI-native tool references last verified: 2026-06-15 (none planned)
 
 Refresh (`/10x-test-plan --refresh`) when:

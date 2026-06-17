@@ -326,26 +326,26 @@ it to the list).
 
 #### Automated
 
-- [x] 2.1 `npm test` passes (both pools)
-- [x] 2.2 `npx vitest related src/pages/api/auth/delete-account.ts --run` finds ≥5 tests
-- [x] 2.3 All six paths (P1–P6) reported passed
-- [x] 2.4 `npm run lint` passes on the new test file
+- [x] 2.1 `npm test` passes (both pools) — 714ff9f
+- [x] 2.2 `npx vitest related src/pages/api/auth/delete-account.ts --run` finds ≥5 tests — 714ff9f
+- [x] 2.3 All six paths (P1–P6) reported passed — 714ff9f
+- [x] 2.4 `npm run lint` passes on the new test file — 714ff9f
 
 #### Manual
 
-- [x] 2.5 `delete-account.ts:22` is wrapped in try-catch (read the file to confirm)
-- [x] 2.6 Each error path test asserts `Content-Type: application/json`
-- [x] 2.7 P3 uses `mockResolvedValue({ error: ... })`, P4 uses `mockRejectedValue(...)`
+- [x] 2.5 `delete-account.ts:22` is wrapped in try-catch (read the file to confirm) — 714ff9f
+- [x] 2.6 Each error path test asserts `Content-Type: application/json` — 714ff9f
+- [x] 2.7 P3 uses `mockResolvedValue({ error: ... })`, P4 uses `mockRejectedValue(...)` — 714ff9f
 
 ### Phase 3: Test-Plan.md Sync
 
 #### Automated
 
-- [ ] 3.1 `npm test` passes after documentation edit
+- [x] 3.1 `npm test` passes after documentation edit
 
 #### Manual
 
-- [ ] 3.2 test-plan.md §3 shows Phase 4 and Phase 5 rows, both `complete`
-- [ ] 3.3 test-plan.md §5 per-edit row updated to "wired"
-- [ ] 3.4 test-plan.md §8 freshness date is 2026-06-17
-- [ ] 3.5 test-plan.md §6.5 exists with hook cookbook pattern
+- [x] 3.2 test-plan.md §3 shows Phase 4 and Phase 5 rows, both `complete`
+- [x] 3.3 test-plan.md §5 per-edit row updated to "wired"
+- [x] 3.4 test-plan.md §8 freshness date is 2026-06-17
+- [x] 3.5 test-plan.md §6.5 exists with hook cookbook pattern
