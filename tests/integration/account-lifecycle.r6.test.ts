@@ -7,18 +7,16 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
 const SUPABASE_KEY = process.env.SUPABASE_KEY ?? "";
 
 describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R6 — account deletion cascade", () => {
-  const adminClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { persistSession: false },
-  });
-  const anonClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
-    auth: { persistSession: false },
-  });
+  let adminClient!: ReturnType<typeof createClient>;
+  let anonClient!: ReturnType<typeof createClient>;
 
   let testUserId = "";
   let testEmail = "";
   const testPassword = "TestPassword123!";
 
   beforeAll(async () => {
+    adminClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+    anonClient = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
     testEmail = `test-r6-${Date.now()}@test.example`;
 
     const { data: createData, error: createError } = await adminClient.auth.admin.createUser({

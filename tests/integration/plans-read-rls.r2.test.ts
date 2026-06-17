@@ -7,9 +7,7 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
 const SUPABASE_KEY = process.env.SUPABASE_KEY ?? "";
 
 describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R2 SSR — cross-user plan read blocked by RLS", () => {
-  const adminClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { persistSession: false },
-  });
+  let adminClient!: ReturnType<typeof createClient>;
 
   const suffix = Date.now();
   let userAId = "";
@@ -19,6 +17,7 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R2 SSR — cross-user plan read blo
   const password = "TestPassword123!";
 
   beforeAll(async () => {
+    adminClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
     const stubPlan: TrainingPlan = {
       weeks: [
         {
