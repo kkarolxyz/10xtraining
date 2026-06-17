@@ -9,11 +9,7 @@ export default defineConfig({
     }),
   ],
   test: {
-    include: [
-      "tests/lib/**/*.test.ts",
-      "tests/api/**/*.test.ts",
-      "tests/smoke/**/*.test.ts",
-    ],
+    include: ["tests/lib/**/*.test.ts", "tests/api/**/*.test.ts", "tests/smoke/**/*.test.ts"],
   },
   resolve: {
     alias: {

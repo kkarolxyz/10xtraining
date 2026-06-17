@@ -27,7 +27,7 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R6 — account deletion cascade", (
       email_confirm: true,
     });
 
-    if (createError || !createData.user) {
+    if (createError) {
       throw new Error(`beforeAll: failed to create test user — ${createError?.message}`);
     }
 
@@ -58,7 +58,7 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R6 — account deletion cascade", (
 
   afterAll(async () => {
     if (testUserId) {
-      await adminClient.auth.admin.deleteUser(testUserId).catch(() => {});
+      await adminClient.auth.admin.deleteUser(testUserId).catch((_e) => undefined);
     }
   });
 
@@ -66,10 +66,7 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R6 — account deletion cascade", (
     const { error } = await adminClient.auth.admin.deleteUser(testUserId);
     expect(error).toBeNull();
 
-    const { data, error: queryError } = await adminClient
-      .from("plans")
-      .select("id")
-      .eq("user_id", testUserId);
+    const { data, error: queryError } = await adminClient.from("plans").select("id").eq("user_id", testUserId);
 
     expect(queryError).toBeNull();
     expect(data).toHaveLength(0);

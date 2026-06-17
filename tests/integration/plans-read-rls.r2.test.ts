@@ -36,7 +36,7 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R2 SSR — cross-user plan read blo
       password,
       email_confirm: true,
     });
-    if (errA || !dataA.user) throw new Error(`beforeAll: create User A failed — ${errA?.message}`);
+    if (errA) throw new Error(`beforeAll: create User A failed — ${errA.message}`);
     userAId = dataA.user.id;
 
     const { data: planData, error: planErr } = await adminClient
@@ -44,7 +44,7 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R2 SSR — cross-user plan read blo
       .insert({ user_id: userAId, name: "R2 RLS test plan", goal: "speed", ride_stats: "3 rides", plan: stubPlan })
       .select("id")
       .single();
-    if (planErr || !planData) throw new Error(`beforeAll: insert plan failed — ${planErr?.message}`);
+    if (planErr) throw new Error(`beforeAll: insert plan failed — ${planErr.message}`);
     planAId = planData.id as string;
 
     // Create User B and sign in to obtain a real session token
@@ -54,7 +54,7 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R2 SSR — cross-user plan read blo
       password,
       email_confirm: true,
     });
-    if (errB || !dataB.user) throw new Error(`beforeAll: create User B failed — ${errB?.message}`);
+    if (errB) throw new Error(`beforeAll: create User B failed — ${errB.message}`);
     userBId = dataB.user.id;
 
     const anonClient = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
@@ -62,8 +62,8 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R2 SSR — cross-user plan read blo
       email: emailB,
       password,
     });
-    if (signInErr || !signInData.session) {
-      throw new Error(`beforeAll: sign in as User B failed — ${signInErr?.message}`);
+    if (signInErr) {
+      throw new Error(`beforeAll: sign in as User B failed — ${signInErr.message}`);
     }
 
     userBClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
@@ -73,8 +73,8 @@ describe.skipIf(!SUPABASE_SERVICE_ROLE_KEY)("R2 SSR — cross-user plan read blo
   });
 
   afterAll(async () => {
-    if (userAId) await adminClient.auth.admin.deleteUser(userAId).catch(() => {});
-    if (userBId) await adminClient.auth.admin.deleteUser(userBId).catch(() => {});
+    if (userAId) await adminClient.auth.admin.deleteUser(userAId).catch((_e) => undefined);
+    if (userBId) await adminClient.auth.admin.deleteUser(userBId).catch((_e) => undefined);
   });
 
   it("User B cannot read User A's plan (RLS blocks cross-user access)", async () => {
