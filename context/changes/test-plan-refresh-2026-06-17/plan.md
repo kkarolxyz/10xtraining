@@ -383,8 +383,8 @@ npx playwright test --ui                                   # interactive UI mode
 
 #### Automated
 
-- [x] 2.1 E2E credentials set → `npm run test:e2e` reports 2 tests passing
-- [x] 2.2 Credentials absent → 2 tests skipped, not failed
+- [x] 2.1 E2E credentials set → `npm run test:e2e` reports 2 tests passing — 854cb92
+- [x] 2.2 Credentials absent → 2 tests skipped, not failed — 854cb92
 
 #### Manual
 
@@ -395,7 +395,7 @@ npx playwright test --ui                                   # interactive UI mode
 
 #### Automated
 
-- [ ] 3.1 CI pipeline shows `e2e` job on PR alongside `ci`
+- [ ] 3.1 CI pipeline shows `e2e` job on PR alongside `ci` — 4e714f3
 - [ ] 3.2 `e2e` CI job passes with 2 tests passing
 
 #### Manual

@@ -28,7 +28,7 @@ pnpm-debug.log*
 .idea/
 
 # playwright
-
+.playwright-cli
 playwright/.auth/
 playwright-report/
 test-results/
