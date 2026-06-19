@@ -11,6 +11,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "test": "vitest run && vitest run --config vitest.integration.config.ts",
+    "test:e2e": "playwright test",
     "deploy": "wrangler deploy --config dist/server/wrangler.json"
   },
   "dependencies": {
@@ -40,6 +41,7 @@
     "@cloudflare/vitest-pool-workers": "^0.16.15",
     "@eslint/compat": "^2.0.3",
     "@eslint/js": "^9.29.0",
+    "@playwright/test": "^1.61.0",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.7.0",
