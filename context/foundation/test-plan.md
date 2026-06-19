@@ -6,7 +6,7 @@
 >
 > Refresh: re-run `/10x-test-plan --refresh` when stale (see §8).
 >
-> Last updated: 2026-06-16 (Phase 3 complete)
+> Last updated: 2026-06-19 (Phase 6 complete)
 
 ---
 
@@ -49,6 +49,9 @@ research's job, see §1 principle #3).
 | R4 | Empty or single-ride stats are accepted by the server → LLM generates a meaningless plan with no user error shown | Medium | Medium | PRD US-01 AC ("too sparse input shows error, no silent junk output"); PRD FR-004; untrusted-input abuse lens |
 | R5 | Plan generation returns no feedback when slow or failing mid-stream — user cannot distinguish loading from broken | Medium | Medium | PRD §NFR (30s user-visible response); roadmap F-02 LLM latency note; Cloudflare Workers cold-start risk |
 | R6 | Account deletion partially completes — plan rows persist in the database after auth.users is deleted | High | Low | PRD FR-012 (GDPR right to erasure); roadmap S-04 risk note (must delete across all tables) |
+| R7 | Agent edits a risk-area source file → per-edit hook does not fire (misconfigured matcher or missing `jq`) → lint/test feedback is silently skipped mid-session | Medium | Low | Phase 4 review; configuration risk for hook infra |
+| R8 | `deleteUser()` SDK call throws (network failure, timeout) → unhandled throw propagates to Astro runtime → endpoint returns HTML 500 instead of `application/json`, breaking any client expecting JSON | Medium | Low | Phase 5 code review; `delete-account.ts` lacked try-catch |
+| R9 | Plan record not persisted to DB, or SSR page query fails on reload → user sees their generated plan disappear on page refresh, destroying core product value | High | Medium | Phase 6 planning session; S-01 core scenario not yet validated end-to-end |
 
 ### Risk Response Guidance
 
@@ -60,6 +63,9 @@ research's job, see §1 principle #3).
 | R4 | Submitting empty stats or a single-ride entry to the generation endpoint returns a 4xx with user-readable guidance | "Client-side validation catches all bad input before it reaches the server" | Where server-side validation lives in the generation API handler and what it checks | Integration test: POST to generation endpoint with empty body, whitespace-only body, and single-ride body | Trusting client validation or testing only happy-path inputs |
 | R5 | Generation endpoint responds (success or structured error) within 30 seconds, and the UI surfaces feedback if the response is delayed | "Streaming behaves identically in Cloudflare Workers (workerd) and Node" | Whether streaming is used, how timeout is handled in the edge runtime, workerd cold-start behavior | Manual smoke test against staging with a real LLM call — not meaningful to mock for latency | Mocking the LLM call and claiming the latency test passes |
 | R6 | After the deletion API call succeeds, re-login with the same credentials is rejected and the plans table returns 0 rows for that user ID | "Deleting auth.users cascades plan rows automatically" | Deletion ordering (plans first or auth.users first), whether CASCADE is configured in the DB schema or deletion is manual | Integration test with a Supabase test client: delete account → query plans for that user ID | Asserting only that the API returns 200 without verifying that data was actually removed |
+| R7 | Editing a risk-area file triggers the hook, lint + vitest related both run, and a real failure is surfaced as exit 2 | "The hook fires on every edit because the matcher is broad enough" | Hook matcher config in `.claude/settings.json`, `jq` availability in PATH, `RISK_AREAS` array in `post-edit.sh` | Manual smoke: edit a risk-area file and observe hook output in the agent's context | Testing only that the hook file exists without verifying it actually fires on edits |
+| R8 | When `deleteUser()` throws (not resolves with `{ error }`), the endpoint returns `application/json` with status 500 — not an HTML Astro error page | "`{ error }` and throw are the same failure mode" | Whether the endpoint wraps the SDK call in try-catch and what it returns from the catch branch | Hermetic unit test: stub `deleteUser` to `mockRejectedValue`, assert response Content-Type and status | Testing only the `{ error }` path and assuming throw cannot happen |
+| R9 | After `window.location.href` redirects to `/plans/{id}`, a full page reload still shows the same plan heading — not an empty state or redirect to `/dashboard` | "React state in-memory is the same as DB persistence" | How the SSR page queries the plan by ID, whether the user_id filter is applied, what happens if the query returns null | E2E test: generate plan → waitForURL → reload → assert heading text matches | Asserting the plan is visible immediately after generation without the reload that proves persistence |
 
 ---
 
@@ -76,6 +82,7 @@ orchestrator updates Status and Change folder as artifacts appear on disk.
 | 3 | Account lifecycle + quality gates | Prove account deletion cascades completely; wire test run into CI before the build step; add test gate to pre-commit | R5 (smoke), R6 | integration (Supabase test client), CI YAML update, pre-commit hook | complete | context/changes/testing-account-lifecycle |
 | 4 | Per-edit hooks | Wire PostToolUse hook: lint on every edit, vitest related on risk-area file edits | R7 | Hook config + manual smoke | complete | context/changes/test-plan-refresh-2026-06-16 |
 | 5 | Delete-account error branches | Fix unhandled throw; hermetic tests for all six endpoint paths | R8 | hermetic (unit, workerd pool) | complete | context/changes/test-plan-refresh-2026-06-16 |
+| 6 | E2E generation + persistence | Playwright tests against local dev server (real LLM + real Supabase): loading feedback visible (R5), plan survives page reload (R9) | R5, R9 | e2e (Playwright, Chromium, real LLM, real Supabase) | complete | context/changes/test-plan-refresh-2026-06-17 |
 
 ---
 
@@ -91,7 +98,7 @@ actually exposed in the current session.
 | unit + integration | vitest + @cloudflare/vitest-pool-workers | None yet — to be installed in Phase 1; pool workers runs tests inside the workerd runtime, matching production behavior |
 | LLM / fetch mocking | vi.mock or MSW fetch adapter | None yet — Phase 1 research will confirm the right approach for mocking OpenRouter calls in workerd |
 | Supabase test client | @supabase/supabase-js (test project) | Phase 3 will confirm local vs. remote test project approach |
-| e2e | none | Not planned; risks covered by integration layer at lower cost |
+| e2e | @playwright/test 1.61.0 | Phase 6; Chromium only; webServer starts `npm run dev` (workerd/wrangler); `.dev.vars` required for secrets; test account via `E2E_TEST_EMAIL`/`E2E_TEST_PASSWORD` env vars |
 | AI-native | none | Not planned; user explicitly excluded visual and infra-heavy testing (see §7) |
 
 **Stack grounding tools (current session):**
@@ -117,7 +124,8 @@ phase lands.
 | per-edit lint + scoped tests | local (PostToolUse hook) | required — wired in §3 Phase 4 | lint errors and risk-area test failures surfaced mid-session; hook covers lint always + vitest related for risk-area files (`src/middleware.ts`, `src/lib/openrouter.ts`, `src/pages/api/plans/[id].ts`, `src/pages/api/auth/delete-account.ts`) |
 | pre-commit test run | local (lint-staged) | required after §3 Phase 3 | regressions at commit time before they reach CI |
 | pre-prod smoke (latency) | staging | recommended after §3 Phase 3 | environment-specific failures and 30s NFR (R5) |
-| visual diff / e2e | CI on PR | not planned | excluded per §7 |
+| e2e (Playwright) | local + CI | required after §3 Phase 6 | browser-level state and timing regressions (R5 latency, R9 persistence) |
+| visual diff / pixel regression | CI on PR | not planned | excluded per §7 |
 
 ---
 
@@ -435,6 +443,62 @@ expect(body.error.length).toBeGreaterThan(0);
 
 ---
 
+### 6.6 Adding an E2E test
+
+**Location**: `tests/e2e/<risk>.<rN>.spec.ts`
+
+**Run commands**
+
+```bash
+npm run test:e2e                                                        # full E2E suite
+npx playwright test tests/e2e/generation-feedback.r5.spec.ts            # single spec
+npx playwright test --ui                                                # interactive UI mode
+```
+
+**Auth pattern**: auth is handled once by `tests/e2e/auth.setup.ts` (signs in via UI, saves `storageState`). Individual tests start already authenticated — no inline sign-in needed. The chromium project depends on the setup project; storageState is loaded automatically.
+
+**Skip guard** (required at `describe` level):
+
+```typescript
+test.skip(!process.env.E2E_TEST_EMAIL, "E2E credentials not set — set E2E_TEST_EMAIL and E2E_TEST_PASSWORD");
+```
+
+**Hydration guard**: Astro's `client:load` hydrates React asynchronously after page load. Call `await page.waitForLoadState("networkidle")` after `page.goto()` before filling any controlled input — otherwise `fill()` races React's initial render and is reset.
+
+**try/finally cleanup**: always delete test data in the `finally` block so cleanup runs even on assertion failure.
+
+```typescript
+test("...", async ({ page }) => {
+  let planUrl: string | null = null;
+  try {
+    await page.goto("/generate");
+    await page.waitForLoadState("networkidle");
+    // ... arrange / act / assert ...
+    planUrl = page.url();
+  } finally {
+    if (planUrl) {
+      await page.goto(planUrl);
+      await page.getByRole("button", { name: "Delete" }).click();
+      await page.waitForURL("/dashboard");
+    }
+  }
+});
+```
+
+**sr-only radio buttons**: Tailwind `sr-only` clips the element to 1×1 px — `click()` won't reach it. Use `evaluate` to fire the native browser event:
+
+```typescript
+await page.getByRole("radio", { name: /speed/i }).evaluate((el) => {
+  (el as HTMLInputElement).click();
+});
+```
+
+**Oracle rule**: assert visible DOM state and URL, not response codes.
+
+**Reference tests**: `tests/e2e/generation-feedback.r5.spec.ts`, `tests/e2e/plan-persistence.r9.spec.ts`
+
+---
+
 ### 6.5 Adding a risk-area file to the per-edit hook
 
 **Script location**: `.claude/hooks/post-edit.sh`
@@ -473,7 +537,7 @@ The hook fires on every `Write` or `Edit` tool use (PostToolUse event in `.claud
 Exclusions agreed during the Phase 2 interview (Q5). Future contributors
 should respect these unless the underlying assumption changes.
 
-- **UI look and feel** — visual correctness of Tailwind/React components is subjective, snapshot-fragile, and low blast-radius. Re-evaluate if a CSS regression causes a production incident. (Source: Phase 2 interview Q5.)
+- **Browser UI look and feel** — visual correctness of Tailwind/React layout, z-index, and animation is subjective and snapshot-fragile. Functional E2E tests (R5, R9) are now in Phase 6; purely visual assertions (pixel diffs, CSS layout) remain excluded. Re-evaluate if a CSS regression causes a production incident. (Source: Phase 2 interview Q5.)
 - **Configuration values** — env vars, wrangler config, ESLint config, Prettier config. These are validated at build time or by tool execution; testing the config itself adds noise with no signal. Re-evaluate if a misconfiguration causes a production outage. (Source: Phase 2 interview Q5.)
 - **Deep infrastructure mocking** — do not replicate the Cloudflare Workers runtime, Supabase internals, or OpenRouter internals in test doubles. Use `@cloudflare/vitest-pool-workers` (real workerd) and a real Supabase test project instead. Re-evaluate if the test suite becomes flaky due to real-environment constraints. (Source: Phase 2 interview Q5; also enforces the cost × signal principle from §1.)
 

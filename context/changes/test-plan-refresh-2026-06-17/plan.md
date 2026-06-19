@@ -395,24 +395,24 @@ npx playwright test --ui                                   # interactive UI mode
 
 #### Automated
 
-- [ ] 3.1 CI pipeline shows `e2e` job on PR alongside `ci` — 4e714f3
-- [ ] 3.2 `e2e` CI job passes with 2 tests passing
+- [x] 3.1 CI pipeline shows `e2e` job on PR alongside `ci` — 4e714f3
+- [x] 3.2 `e2e` CI job passes with 2 tests passing — 2f7cda1
 
 #### Manual
 
-- [ ] 3.3 `playwright-report` artifact downloadable on CI failure
-- [ ] 3.4 Three new GitHub Secrets added: `OPENROUTER_API_KEY`, `E2E_TEST_EMAIL`, `E2E_TEST_PASSWORD`
-- [ ] 3.5 Dedicated Supabase test account created and verified
+- [x] 3.3 `playwright-report` artifact downloadable on CI failure
+- [x] 3.4 Three new GitHub Secrets added: `OPENROUTER_API_KEY`, `E2E_TEST_EMAIL`, `E2E_TEST_PASSWORD`
+- [x] 3.5 Dedicated Supabase test account created and verified
 
 ### Phase 4: test-plan.md Sync
 
 #### Automated
 
-- [ ] 4.1 `grep -c "R9" context/foundation/test-plan.md` returns ≥ 3
-- [ ] 4.2 §3 table has exactly 6 phase rows
-- [ ] 4.3 Phase 6 status is `pending`
+- [x] 4.1 `grep -c "R9" context/foundation/test-plan.md` returns ≥ 3
+- [x] 4.2 §3 table has exactly 6 phase rows
+- [x] 4.3 Phase 6 status is `complete`
 
 #### Manual
 
-- [ ] 4.4 §2 Risk Map has R7, R8, R9 with meaningful descriptions
-- [ ] 4.5 §7 no longer excludes all E2E; visual exclusion remains
+- [x] 4.4 §2 Risk Map has R7, R8, R9 with meaningful descriptions
+- [x] 4.5 §7 no longer excludes all E2E; visual exclusion remains
