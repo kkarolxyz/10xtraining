@@ -372,24 +372,24 @@ npx playwright test --ui                                   # interactive UI mode
 
 #### Automated
 
-- [x] 1.1 `npx playwright test --list` exits 0 and lists `tests/e2e/plan-persistence.r9.spec.ts`
-- [x] 1.2 `npm run test:e2e` starts without crashing during setup
+- [x] 1.1 `npx playwright test --list` exits 0 and lists `tests/e2e/plan-persistence.r9.spec.ts` — a88679d
+- [x] 1.2 `npm run test:e2e` starts without crashing during setup — a88679d
 
 #### Manual
 
-- [x] 1.3 Dev server URL in playwright.config.ts matches actual URL from `npm run dev`
+- [x] 1.3 Dev server URL in playwright.config.ts matches actual URL from `npm run dev` — a88679d
 
 ### Phase 2: E2E Tests for R5 + R9
 
 #### Automated
 
-- [ ] 2.1 E2E credentials set → `npm run test:e2e` reports 2 tests passing
-- [ ] 2.2 Credentials absent → 2 tests skipped, not failed
+- [x] 2.1 E2E credentials set → `npm run test:e2e` reports 2 tests passing
+- [x] 2.2 Credentials absent → 2 tests skipped, not failed
 
 #### Manual
 
-- [ ] 2.3 Loading state is visibly present before plan appears
-- [ ] 2.4 Plan content matches after `page.reload()` — not empty state
+- [x] 2.3 Loading state is visibly present before plan appears
+- [x] 2.4 Plan content matches after `page.reload()` — not empty state
 
 ### Phase 3: CI Wiring
 

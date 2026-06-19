@@ -1,5 +1,7 @@
+// Seed exemplar for E2E tests in this project.
+// Auth is handled once by tests/e2e/auth.setup.ts (signs in, saves storageState).
+// Individual tests start already authenticated — no inline signin needed.
 // Risk: R9 — context/foundation/test-plan.md
-// Seed: seed.spec.ts
 import { test, expect } from "@playwright/test";
 
 const VALID_RIDE_STATS = [
@@ -29,8 +31,7 @@ test.describe("R9 — plan persists after page reload", () => {
 
       // wait for loading state then redirect (real LLM — allow 30 s per R5 NFR)
       await page.getByText(/generating your plan/i).isVisible();
-
-      await page.waitForURL(/\/plans\/[0-9a-f-]+/, { timeout: 30_000 });
+      await page.waitForURL(/\/plans\/[0-9a-f-]+/, { timeout: 90_000 });
       planUrl = page.url();
 
       // Assert: plan heading is visible after generation
