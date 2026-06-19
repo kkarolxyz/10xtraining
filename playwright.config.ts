@@ -5,17 +5,15 @@ export default defineConfig({
   timeout: 120_000,
   use: {
     baseURL: "http://localhost:4321",
-    storageState: "playwright/.auth/user.json",
   },
   projects: [
     {
       name: "setup",
       testMatch: /auth\.setup\.ts/,
-      use: { storageState: undefined },
     },
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: { ...devices["Desktop Chrome"], storageState: "playwright/.auth/user.json" },
       dependencies: ["setup"],
     },
   ],
